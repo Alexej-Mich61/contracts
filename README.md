@@ -32,7 +32,12 @@
 
 ```bash
 git clone https://github.com/Alexej-Mich61/contracts.git
-cd contracts```
+cd contracts
 
-```pip freeze > requirements.txt```
-```python manage.py runserver```
+
+### Себе 
+```bash
+```pip freeze > requirements.txt
+
+```bash
+```python manage.py runserver
