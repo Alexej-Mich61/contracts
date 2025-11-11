@@ -3,6 +3,14 @@
 **Django-приложение для ведения базы договоров**:  
 хранение, поиск, фильтрация, экспорт, админ-панель.
 
+
+Себе 
+```bash
+```pip freeze > requirements.txt
+
+```bash
+```python manage.py runserver
+
 ---
 
 ## 🚀 Функционал (в разработке)
@@ -34,10 +42,3 @@
 git clone https://github.com/Alexej-Mich61/contracts.git
 cd contracts
 
-
-### Себе 
-```bash
-```pip freeze > requirements.txt
-
-```bash
-```python manage.py runserver
