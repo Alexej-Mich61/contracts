@@ -1,5 +1,6 @@
 #contracts/settings.py
-
+import os
+from decouple import config
 from pathlib import Path
 from decouple import config, Csv
 
@@ -104,6 +105,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Для файлов
+FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20 МБ
+DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
