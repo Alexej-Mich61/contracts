@@ -1,0 +1,83 @@
+<!-- contract_list.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Долгосрочные договоры</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+{% load crispy_forms_tags %}
+<div class="container mt-4">
+
+    <h1 class="mb-4">Долгосрочные договоры</h1>
+
+    <!-- Фильтры -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-4">
+            <input type="text" name="q" class="form-control" placeholder="Поиск по заказчику, ИНН, исполнителю..." value="{{ search_query }}">
+        </div>
+        <div class="col-md-3">
+            <select name="status" class="form-select">
+                <option value="">Все статусы</option>
+                <option value="active" {% if selected_status == 'active' %}selected{% endif %}>Действует</option>
+                <option value="completed" {% if selected_status == 'completed' %}selected{% endif %}>Завершён</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">Найти</button>
+        </div>
+    </form>
+<a href="{% url 'contracts:contract_add' %}" class="btn btn-success mb-3">+ Новый договор</a>
+    <!-- Список -->
+    {% if contracts %}
+    <div class="row">
+        {% for contract in contracts %}
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'contracts:contract_detail' contract.pk %}" class="text-decoration-none">
+                            {{ contract.customer_name }}
+                        </a>
+                    </h5>
+                    <p class="card-text">
+                        <strong>ИНН:</strong> {{ contract.customer_inn }}<br>
+                        <strong>Исполнитель:</strong> {{ contract.implementator }}<br>
+                        <strong>Срок:</strong> {{ contract.start_date }} — {{ contract.end_date }}<br>
+                        <span class="badge bg-{% if contract.status == 'active' %}success{% else %}secondary{% endif %}">
+                            {% if contract.status == 'active' %}Действует{% else %}Завершён{% endif %}
+                        </span>
+                        <span class="badge bg-info ms-1">{{ contract.aks.count }} АК</span>
+                        {% if contract.file_count > 0 %}
+                        <span class="badge bg-warning ms-1">{{ contract.file_count }} файл(ов)</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Пагинация -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}&status={{ selected_status }}">«</a></li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Стр. {{ page_obj.number }} из {{ paginator.num_pages }}</span></li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ search_query }}&status={{ selected_status }}">»</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <p class="text-muted">Договоры не найдены.</p>
+    {% endif %}
+
+</div>
+</body>
+</html>
