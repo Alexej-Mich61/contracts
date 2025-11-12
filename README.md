@@ -10,7 +10,8 @@
 
 ```bash
 ```python manage.py runserver
-
+```python manage.py makemigrations contracts_app
+```python manage.py migrate
 ---
 
 ## 🚀 Функционал (в разработке)
