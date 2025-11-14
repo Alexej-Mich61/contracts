@@ -45,7 +45,6 @@ class ContractAdmin(admin.ModelAdmin):
     list_filter = ('status', 'implementator', 'start_date', 'end_date')
     search_fields = ('customer_name', 'customer_inn', 'implementator__name')
     inlines = [AKInline]
-    readonly_fields = ('status', 'created_at', 'updated_at')
 
     fieldsets = (
         ("Заказчик", {'fields': ('customer_name', 'customer_inn')}),

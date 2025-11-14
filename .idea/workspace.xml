@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="5. шаблоны: список договоров, форма редактирования">
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="6. чек лист, АК, редактирование">
+      <change afterPath="$PROJECT_DIR$/contracts_app/templatetags/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contracts_app/templatetags/file_utils.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts_app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/settings.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_detail.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_form.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts_app/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -138,7 +141,15 @@
       <option name="project" value="LOCAL" />
       <updated>1762951554507</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="6. чек лист, АК, редактирование">
+      <option name="closed" value="true" />
+      <created>1762963209496</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1762963209496</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -148,6 +159,7 @@
     <MESSAGE value="4. модели договоров, регионов, работ" />
     <MESSAGE value="4. модели контракт, АК" />
     <MESSAGE value="5. шаблоны: список договоров, форма редактирования" />
-    <option name="LAST_COMMIT_MESSAGE" value="5. шаблоны: список договоров, форма редактирования" />
+    <MESSAGE value="6. чек лист, АК, редактирование" />
+    <option name="LAST_COMMIT_MESSAGE" value="6. чек лист, АК, редактирование" />
   </component>
 </project>

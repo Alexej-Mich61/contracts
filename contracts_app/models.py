@@ -115,7 +115,7 @@ class Contract(models.Model):
         super().save(*args, **kwargs)
 
     def file_count(self):
-        return sum(1 for f in [self.file1, self.file2, self.file3] if f)
+        return sum(bool(getattr(self, f'file{i}')) for i in range(1, 4))
     file_count.short_description = "Файлов"
 
 

@@ -9,7 +9,7 @@ from .models import Contract
 from .forms import ContractForm, AKFormSet
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-from django.contrib.auth.decorators import login_required
+
 
 
 class ContractListView(ListView):
@@ -134,5 +134,4 @@ def update_checklist(request, pk):
     contract.oko = 'oko' in request.POST
     contract.spolokh = 'spolokh' in request.POST
     contract.save()
-    messages.success(request, f"Чек-лист обновлён для договора «{contract.customer_name}»")
-    return redirect('contracts:contract_list')
+    return JsonResponse({'success': True, 'message': 'Чек-лист обновлён'})
