@@ -18,13 +18,18 @@
 <body class="bg-light">
 {% load file_utils %}
 <div class="container mt-4">
+    <!-- Toast container — фиксированный в правом верхнем углу -->
+    <div aria-live="polite" aria-atomic="true" class="position-fixed top-0 end-0 p-3" style="z-index: 1100;">
+        <div id="toast-container"></div>
+    </div>
 
     <h1 class="mb-4">Долгосрочные договоры</h1>
 
     <!-- Фильтры -->
     <form method="get" class="row g-3 mb-4">
         <div class="col-md-4">
-            <input type="text" name="q" class="form-control" placeholder="Поиск по заказчику, ИНН, исполнителю..." value="{{ search_query }}">
+            <input type="text" name="q" class="form-control" placeholder="Поиск по заказчику, ИНН, исполнителю..."
+                   value="{{ search_query }}">
         </div>
         <div class="col-md-3">
             <select name="status" class="form-select">
@@ -43,132 +48,169 @@
 
     <!-- Список договоров -->
     {% if contracts %}
-        {% for contract in contracts %}
-        <div class="contract-card p-3 bg-white">
-            <div class="row align-items-center">
+    {% for contract in contracts %}
+    <div class="contract-card p-3 bg-white">
+        <div class="row align-items-center">
 
-                <!-- Левая часть: основная информация -->
-                <div class="col-md-4">
-                    <h5>
-                        <a href="{% url 'contracts:contract_detail' contract.pk %}" class="text-decoration-none text-dark">
-                            {{ contract.customer_name }}
-                        </a>
-                    </h5>
-                    <p class="mb-1">
-                        <strong>ИНН:</strong> {{ contract.customer_inn }}<br>
-                        <strong>Исполнитель:</strong> {{ contract.implementator }}<br>
-                        <strong>Срок:</strong> {{ contract.start_date }} — {{ contract.end_date }}<br>
-                        <span class="badge bg-{% if contract.status == 'active' %}success{% else %}danger{% endif %}">
+            <!-- Левая часть: основная информация -->
+            <div class="col-md-4">
+                <h5>
+                    <a href="{% url 'contracts:contract_detail' contract.pk %}" class="text-decoration-none text-dark">
+                        {{ contract.customer_name }}
+                    </a>
+                </h5>
+                <p class="mb-1">
+                    <strong>ИНН:</strong> {{ contract.customer_inn }}<br>
+                    <strong>Исполнитель:</strong> {{ contract.implementator }}<br>
+                    <strong>Срок:</strong> {{ contract.start_date }} — {{ contract.end_date }}<br>
+                    <span class="badge bg-{% if contract.status == 'active' %}success{% else %}danger{% endif %}">
                             {% if contract.status == 'active' %}Действует{% else %}Завершён{% endif %}
                         </span>
-                        <span class="badge bg-info ms-1">{{ contract.aks.count }} АК</span>
-                        {% if contract.file_count > 0 %}
-                        <span class="badge bg-warning ms-1">{{ contract.file_count }} файл(ов)</span>
-                        {% endif %}
-                    </p>
-                </div>
-
-                <!-- Чек-лист -->
-                <div class="col-md-3 text-center">
-                    <form method="post" action="{% url 'contracts:update_checklist' contract.pk %}" class="d-inline checklist-form" data-contract-id="{{ contract.pk }}">
-                        {% csrf_token %}
-                        <div class="checkbox-inline">
-                            <input type="checkbox" name="gos_services" {% if contract.gos_services %}checked{% endif %} onchange="handleChecklistChange(this)">
-                            <label class="form-check-label">Госуслуги</label>
-                        </div>
-                        <div class="checkbox-inline">
-                            <input type="checkbox" name="oko" {% if contract.oko %}checked{% endif %} onchange="handleChecklistChange(this)">
-                            <label class="form-check-label">ОКО</label>
-                        </div>
-                        <div class="checkbox-inline">
-                            <input type="checkbox" name="spolokh" {% if contract.spolokh %}checked{% endif %} onchange="handleChecklistChange(this)">
-                            <label class="form-check-label">Сполох</label>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Список АК -->
-                <div class="col-md-3">
-                    {% if contract.aks.exists %}
-                    <div class="overflow-auto" style="max-height: 80px;">
-                        {% for ak in contract.aks.all %}
-                        <div class="ak-item">
-                            <strong>АК {{ ak.number }}</strong> — {{ ak.district }} — {{ ak.address|truncatechars:30 }}
-                        </div>
-                        {% endfor %}
-                    </div>
-                    {% else %}
-                    <span class="text-muted">Нет АК</span>
+                    <span class="badge bg-info ms-1">{{ contract.aks.count }} АК</span>
+                    {% if contract.file_count > 0 %}
+                    <span class="badge bg-warning ms-1">{{ contract.file_count }} файл(ов)</span>
                     {% endif %}
-                </div>
+                </p>
+            </div>
 
-                <!-- Правая часть: файлы + примечание + работы -->
-                <div class="col-md-2 text-end">
-                    <!-- Примечание (иконка) -->
-                    {% if contract.note %}
-                    <span class="note-icon me-2" title="{{ contract.note|truncatechars:100 }}">
+            <!-- Чек-лист -->
+            <div class="col-md-3 text-center">
+                <form method="post" action="{% url 'contracts:update_checklist' contract.pk %}"
+                      class="d-inline checklist-form" data-contract-id="{{ contract.pk }}">
+                    {% csrf_token %}
+                    <div class="checkbox-inline">
+                        <input type="checkbox" name="gos_services" {% if contract.gos_services %}checked{% endif %}
+                               onchange="handleChecklistChange(this)">
+                        <label class="form-check-label">Госуслуги</label>
+                    </div>
+                    <div class="checkbox-inline">
+                        <input type="checkbox" name="oko" {% if contract.oko %}checked{% endif %}
+                               onchange="handleChecklistChange(this)">
+                        <label class="form-check-label">ОКО</label>
+                    </div>
+                    <div class="checkbox-inline">
+                        <input type="checkbox" name="spolokh" {% if contract.spolokh %}checked{% endif %}
+                               onchange="handleChecklistChange(this)">
+                        <label class="form-check-label">Сполох</label>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Список АК -->
+            <div class="col-md-3">
+                {% if contract.aks.exists %}
+                <div class="overflow-auto" style="max-height: 80px;">
+                    {% for ak in contract.aks.all %}
+                    <div class="ak-item">
+                        <strong>АК {{ ak.number }}</strong> — {{ ak.district }} — {{ ak.address|truncatechars:30 }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <span class="text-muted">Нет АК</span>
+                {% endif %}
+            </div>
+
+            <!-- Правая часть: файлы + примечание + работы -->
+            <div class="col-md-2 text-end">
+                <!-- Примечание (иконка) -->
+                {% if contract.note %}
+                <span class="note-icon me-2" title="{{ contract.note|truncatechars:100 }}">
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1h1V2a2 2 0 0 1 2-2z"/>
                             <path d="M5 4h6v1H5zM5 6h6v1H5zM5 8h6v1H5z"/>
                         </svg>
                     </span>
-                    {% endif %}
+                {% endif %}
 
-                    <!-- Работы -->
-                    {% if contract.works.exists %}
-                    <div class="d-inline-block text-start mb-1">
-                        {% for work in contract.works.all %}
-                        <span class="badge bg-primary work-badge me-1">{{ work.name }}</span>
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-
-                    <!-- Файлы -->
-                    <div class="d-block mt-1">
-                        {% if contract.file1 %}
-                        <a href="{{ contract.file1.url }}" target="_blank" class="file-icon text-primary" title="{{ contract.file1.name }}">
-                            {{ contract.file1.name|get_extension }}
-                        </a>
-                        {% endif %}
-                        {% if contract.file2 %}
-                        <a href="{{ contract.file2.url }}" target="_blank" class="file-icon text-success" title="{{ contract.file2.name }}">
-                            {{ contract.file2.name|get_extension }}
-                        </a>
-                        {% endif %}
-                        {% if contract.file3 %}
-                        <a href="{{ contract.file3.url }}" target="_blank" class="file-icon text-warning" title="{{ contract.file3.name }}">
-                            {{ contract.file3.name|get_extension }}
-                        </a>
-                        {% endif %}
-                    </div>
+                <!-- Работы -->
+                {% if contract.works.exists %}
+                <div class="d-inline-block text-start mb-1">
+                    {% for work in contract.works.all %}
+                    <span class="badge bg-primary work-badge me-1">{{ work.name }}</span>
+                    {% endfor %}
                 </div>
+                {% endif %}
 
+                <!-- Файлы -->
+                <div class="d-block mt-1">
+                    {% if contract.file1 %}
+                    <a href="{{ contract.file1.url }}" target="_blank" class="file-icon text-primary"
+                       title="{{ contract.file1.name }}">
+                        {{ contract.file1.name|get_extension }}
+                    </a>
+                    {% endif %}
+                    {% if contract.file2 %}
+                    <a href="{{ contract.file2.url }}" target="_blank" class="file-icon text-success"
+                       title="{{ contract.file2.name }}">
+                        {{ contract.file2.name|get_extension }}
+                    </a>
+                    {% endif %}
+                    {% if contract.file3 %}
+                    <a href="{{ contract.file3.url }}" target="_blank" class="file-icon text-warning"
+                       title="{{ contract.file3.name }}">
+                        {{ contract.file3.name|get_extension }}
+                    </a>
+                    {% endif %}
+                </div>
             </div>
-        </div>
-        {% endfor %}
 
-        <!-- Пагинация -->
-        {% if is_paginated %}
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                {% if page_obj.has_previous %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}&status={{ selected_status }}">«</a></li>
-                {% endif %}
-                <li class="page-item disabled"><span class="page-link">Стр. {{ page_obj.number }} из {{ paginator.num_pages }}</span></li>
-                {% if page_obj.has_next %}
-                <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&q={{ search_query }}&status={{ selected_status }}">»</a></li>
-                {% endif %}
-            </ul>
-        </nav>
-        {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- Пагинация -->
+    {% if is_paginated %}
+    <nav aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item"><a class="page-link"
+                                     href="?page={{ page_obj.previous_page_number }}&q={{ search_query }}&status={{ selected_status }}">«</a>
+            </li>
+            {% endif %}
+            <li class="page-item disabled"><span class="page-link">Стр. {{ page_obj.number }} из {{ paginator.num_pages }}</span>
+            </li>
+            {% if page_obj.has_next %}
+            <li class="page-item"><a class="page-link"
+                                     href="?page={{ page_obj.next_page_number }}&q={{ search_query }}&status={{ selected_status }}">»</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
 
     {% else %}
-        <p class="text-muted">Договоры не найдены.</p>
+    <p class="text-muted">Договоры не найдены.</p>
     {% endif %}
 
 </div>
 
 <script>
+// Функция показа toast
+function showToast(message, type = 'success') {
+    const bg = type === 'success' ? 'bg-success' : 'bg-danger';
+    const icon = type === 'success' ? '✓' : '✕';
+
+    const toastHtml = `
+        <div class="toast show align-items-center text-white ${bg} border-0 mb-2" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong>${icon}</strong> ${message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    `;
+
+    document.getElementById('toast-container').insertAdjacentHTML('beforeend', toastHtml);
+
+    setTimeout(() => {
+        const toast = document.querySelector('#toast-container .toast');
+        if (toast) new bootstrap.Toast(toast).hide();
+    }, 4000);
+}
+
+// Обработчик чек-листа
 function handleChecklistChange(checkbox) {
     const form = checkbox.form;
     const formData = new FormData(form);
@@ -183,22 +225,16 @@ function handleChecklistChange(checkbox) {
             'X-Requested-With': 'XMLHttpRequest'
         }
     })
-    .then(response => {
-        if (!response.ok) throw new Error('Network error');
-        return response.json();
-    })
+    .then(r => r.ok ? r.json() : Promise.reject())
     .then(data => {
-        if (data.success) {
-            console.log(data.message);
-            const card = form.closest('.contract-card');
-            card.style.transition = 'background 0.3s';
-            card.style.background = '#d4edda';
-            setTimeout(() => card.style.background = '', 600);
-        }
+        showToast('Чек-лист обновлён', 'success');
+        const card = form.closest('.contract-card');
+        card.style.background = '#d4edda';
+        card.style.transition = 'background 0.3s';
+        setTimeout(() => card.style.background = '', 600);
     })
-    .catch(err => {
-        console.error('Ошибка:', err);
-        alert('Ошибка сохранения чек-листа');
+    .catch(() => {
+        showToast('Ошибка сохранения чек-листа', 'danger');
         checkbox.checked = !checkbox.checked;
     });
 }
