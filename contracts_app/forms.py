@@ -13,11 +13,14 @@ class ContractForm(forms.ModelForm):
             'start_date', 'end_date',
             'implementator',
             'gos_services', 'oko', 'spolokh',
+            'works', 'note',
             'file1', 'file2', 'file3'
         ]
         widgets = {
             'start_date': forms.DateInput(attrs={'type': 'date'}),
             'end_date': forms.DateInput(attrs={'type': 'date'}),
+            'note': forms.Textarea(attrs={'rows': 3}),
+            'works': forms.CheckboxSelectMultiple(),
         }
 
     def clean(self):
@@ -26,10 +29,6 @@ class ContractForm(forms.ModelForm):
         end = cleaned_data.get('end_date')
         if start and end and start > end:
             raise ValidationError("Дата начала не может быть позже даты окончания.")
-
-        files = [cleaned_data.get(f'file{i}') for i in range(1, 4)]
-        if not any(f for f in files if f):
-            raise ValidationError("Прикрепите хотя бы один файл.")
         return cleaned_data
 
 

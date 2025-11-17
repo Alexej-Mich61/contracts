@@ -4,8 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="7. корректировки">
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="8. корректировки">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/forms.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_form.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +154,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763130243444</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="8. корректировки">
+      <option name="closed" value="true" />
+      <created>1763369770067</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1763369770067</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -160,6 +174,7 @@
     <MESSAGE value="5. шаблоны: список договоров, форма редактирования" />
     <MESSAGE value="6. чек лист, АК, редактирование" />
     <MESSAGE value="7. корректировки" />
-    <option name="LAST_COMMIT_MESSAGE" value="7. корректировки" />
+    <MESSAGE value="8. корректировки" />
+    <option name="LAST_COMMIT_MESSAGE" value="8. корректировки" />
   </component>
 </project>

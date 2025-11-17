@@ -41,7 +41,8 @@ class AKInline(admin.TabularInline):
 
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'implementator', 'start_date', 'end_date', 'status', 'file_count', 'ak_count')
+    list_display = ('customer_name', 'implementator', 'start_date', 'end_date', 'status', 'file_count', 'ak_count',
+                    'has_note')
     list_filter = ('status', 'implementator', 'start_date', 'end_date')
     search_fields = ('customer_name', 'customer_inn', 'implementator__name')
     inlines = [AKInline]
@@ -62,3 +63,8 @@ class ContractAdmin(admin.ModelAdmin):
     def file_count(self, obj):
         return obj.file_count()
     file_count.short_description = "Файлов"
+
+    def has_note(self, obj):
+        return bool(obj.note)
+    has_note.boolean = True
+    has_note.short_description = "Примечание"

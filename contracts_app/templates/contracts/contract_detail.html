@@ -63,6 +63,30 @@
             </div>
             {% endif %}
 
+            <!-- Работы -->
+            <div class="card mb-3">
+                <div class="card-header"><strong>Работы</strong></div>
+                <div class="card-body">
+                    {% for work in contract.works.all %}
+                    <span class="badge bg-primary me-1">{{ work.name }}</span>
+                    {% empty %}
+                    <span class="text-muted">Не указаны</span>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Примечание -->
+            {% if contract.note %}
+            <div class="card mb-3">
+                <div class="card-header">
+                    <strong>Примечание</strong>
+                </div>
+                <div class="card-body">
+                    <p class="mb-0">{{ contract.note|linebreaks }}</p>
+                </div>
+            </div>
+            {% endif %}
+
             <!-- АК -->
             {% if contract.aks.exists %}
             <div class="card">
@@ -100,11 +124,13 @@
                 <div class="card-header">Действия</div>
                 <div class="card-body">
                     <!-- РЕДАКТИРОВАТЬ -->
-                    <a href="{% url 'contracts:contract_edit' contract.pk %}" class="btn btn-outline-primary w-100 mb-2">
+                    <a href="{% url 'contracts:contract_edit' contract.pk %}"
+                       class="btn btn-outline-primary w-100 mb-2">
                         Редактировать
                     </a>
                     <!-- УДАЛИТЬ (с подтверждением) -->
-                    <form method="post" action="{% url 'contracts:contract_delete' contract.pk %}" style="display:inline;">
+                    <form method="post" action="{% url 'contracts:contract_delete' contract.pk %}"
+                          style="display:inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-danger w-100"
                                 onclick="return confirm('Удалить договор «{{ contract.customer_name }}»? Это действие нельзя отменить.')">
