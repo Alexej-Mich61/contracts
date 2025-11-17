@@ -1,3 +1,4 @@
+# contracts_app/templatetags/file_utils.py
 from django import template
 
 register = template.Library()
