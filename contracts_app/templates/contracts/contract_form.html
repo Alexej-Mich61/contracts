@@ -103,46 +103,52 @@
                             {% for form in ak_formset %}
                             <div class="inline-form bg-white mb-2">
                                 {{ form.id }}
-                                <div class="row">
+                                <div class="row align-items-start">
                                     <div class="col-md-3">{{ form.number|as_crispy_field }}</div>
                                     <div class="col-md-4">{{ form.district|as_crispy_field }}</div>
                                     <div class="col-md-4">{{ form.address|as_crispy_field }}</div>
-                                    <div class="col-md-1">{{ form.DELETE|as_crispy_field }}</div>
+                                    <div class="col-md-1 mt-2">{{ form.DELETE|as_crispy_field }}</div>
                                 </div>
                             </div>
                             {% endfor %}
                         </div>
+
+                        <!-- Пустая форма (без add_class) -->
+                        <div id="empty-ak-form" style="display:none;">
+                            <div class="inline-form bg-white mb-2">
+                                {{ ak_formset.empty_form.id }}
+                                <div class="row align-items-start">
+                                    <div class="col-md-3">{{ ak_formset.empty_form.number }}</div>
+                                    <div class="col-md-4">{{ ak_formset.empty_form.district }}</div>
+                                    <div class="col-md-4">{{ ak_formset.empty_form.address }}</div>
+                                    <div class="col-md-1 mt-2">{{ ak_formset.empty_form.DELETE }}</div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>  <!-- ← ЗАКРЫВАЕМ col-md-8 -->
 
+            <!-- КНОПКИ -->
+            <div class="mt-4">
                 <button type="submit" class="btn btn-success btn-lg">Сохранить</button>
-                <a href="{% url 'contracts:contract_list' %}" class="btn btn-secondary btn-lg">Отмена</a>
-
+                <a href="{% url 'contracts:contract_list' %}" class="btn btn-secondary btn-lg ms-3">Отмена</a>
             </div>
         </div>
     </form>
 </div>
 
-<!-- Пустая форма для клонирования -->
-<div id="empty-ak-form" style="display:none;">
-    <div class="inline-form bg-white mb-2">
-        <div class="row">
-            <div class="col-md-3"><input type="number" name="aks-__prefix__-number" class="form-control" min="1"
-                                         max="99999999"></div>
-            <div class="col-md-4"><select name="aks-__prefix__-district" class="form-select"></select></div>
-            <div class="col-md-4"><input type="text" name="aks-__prefix__-address" class="form-control"></div>
-            <div class="col-md-1"><input type="checkbox" name="aks-__prefix__-DELETE"></div>
-        </div>
-    </div>
-</div>
-
 <script>
     function addAK() {
-        const total = document.querySelector('#id_aks-TOTAL_FORMS');
-        const idx = parseInt(total.value);
-        const tmpl = document.querySelector('#empty-ak-form').innerHTML.replace(/__prefix__/g, idx);
-        document.querySelector('#ak-container').insertAdjacentHTML('beforeend', tmpl);
-        total.value = idx + 1;
+        const container = document.getElementById('ak-container');
+        const totalForms = document.querySelector('#id_aks-TOTAL_FORMS');
+        const formIdx = parseInt(totalForms.value);
+
+        let newFormHtml = document.getElementById('empty-ak-form').innerHTML;
+        newFormHtml = newFormHtml.replace(/__prefix__/g, formIdx);
+
+        container.insertAdjacentHTML('beforeend', newFormHtml);
+        totalForms.value = formIdx + 1;
     }
 </script>
 </body>
