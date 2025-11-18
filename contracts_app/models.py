@@ -111,6 +111,26 @@ class Contract(models.Model):
         help_text="Обязательно для заполнения"
     )
 
+    # СУММА ВСЕГО
+    total_amount = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="Сумма общая",
+        help_text="Например: 1 250 000.00"
+    )
+
+    # СУММА В МЕСЯЦ
+    monthly_amount = models.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        blank=True,
+        null=True,
+        verbose_name="Сумма в месяц",
+        help_text="Например: 104 166.67"
+    )
+
     # Файлы (1–3) — остаются необязательными
     file1 = models.FileField(
         upload_to='contracts/files/',

@@ -13,7 +13,9 @@ class ContractForm(forms.ModelForm):
             'start_date', 'end_date',
             'implementator',
             'gos_services', 'oko', 'spolokh',
-            'works', 'note',
+            'works',
+            'total_amount', 'monthly_amount',
+            'note',
             'file1', 'file2', 'file3'
         ]
         widgets = {
