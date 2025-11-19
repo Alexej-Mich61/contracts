@@ -131,8 +131,7 @@
                         <div class="ak-container">
                             {% for ak in contract.aks.all %}
                             <div class="ak-item text-muted" title="{{ ak.address }}">
-                                <strong>АК {{ ak.number }}</strong> — {{ ak.district }} — {{ ak.address|truncatechars:60
-                                }}
+                                <strong>АК {{ ak.number }}</strong> — {{ ak.district }} — {{ ak.address|truncatechars:60 }}
                             </div>
                             {% endfor %}
                         </div>

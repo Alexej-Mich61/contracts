@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="&#10;12. Добавил сумму, ширина шаблонов">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/templates/contracts/contract_list.html" afterDir="false" />
-    </list>
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="&#10;13. Стили, правки" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -190,7 +186,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763467705300</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="&#10;13. Стили, правки">
+      <option name="closed" value="true" />
+      <created>1763560788230</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1763560788231</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -207,6 +211,7 @@
     <MESSAGE value="&#10;10. исправлена ошибка со списком районов в формах" />
     <MESSAGE value="&#10;11. Уведомления (toasts) вместо alert" />
     <MESSAGE value="&#10;12. Добавил сумму, ширина шаблонов" />
-    <option name="LAST_COMMIT_MESSAGE" value="&#10;12. Добавил сумму, ширина шаблонов" />
+    <MESSAGE value="&#10;13. Стили, правки" />
+    <option name="LAST_COMMIT_MESSAGE" value="&#10;13. Стили, правки" />
   </component>
 </project>
