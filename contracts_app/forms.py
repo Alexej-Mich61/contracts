@@ -1,9 +1,4 @@
 # contracts_app/forms.py
-from django import forms
-from django.core.exceptions import ValidationError
-from .models import Contract, AK, Work, District
-from django.forms import inlineformset_factory
-
 
 class ContractForm(forms.ModelForm):
     class Meta:

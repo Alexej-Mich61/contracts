@@ -1,7 +1,4 @@
-#contracts_app/admin.py
-from django.contrib import admin
-from .models import Work, Region, District, Implementator, Contract, AK
-
+# contracts_app/admin.py
 
 @admin.register(Work)
 class WorkAdmin(admin.ModelAdmin):
