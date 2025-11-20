@@ -1,0 +1,38 @@
+/* static/css/custom.css */
+
+/* Общие улучшения */
+.contract-card {
+    transition: all 0.2s;
+}
+.contract-card:hover {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+}
+
+/* Скролл в блоке АК */
+.ak-container {
+    max-height: 90px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.ak-container::-webkit-scrollbar {
+    width: 6px;
+}
+.ak-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+.ak-container::-webkit-scrollbar-thumb {
+    background: #c0c0c0;
+    border-radius: 10px;
+}
+
+/* Иконка примечания */
+.note-icon {
+    opacity: 0.7;
+    cursor: help;
+}
+.note-icon:hover { opacity: 1; }
+
+.file-icon { font-size: 1.2rem; margin: 0 4px; }
+
+.inline-form { border: 1px solid #dee2e6; padding: 15px; border-radius: 8px; margin-bottom: 15px; }

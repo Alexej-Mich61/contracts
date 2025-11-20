@@ -1,0 +1,46 @@
+<!-- templates/contracts/contract_form.html -->
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+
+{% block title %}
+    {% if form.instance.pk %}Редактировать договор{% else %}Создать договор{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h1 class="mb-4">
+        {% if form.instance.pk %}Редактировать договор{% else %}Создать договор{% endif %}
+    </h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="col-lg-9">
+                {% include "contracts/contract_form_content.html" %}
+            </div>
+        </div>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-5">Сохранить</button>
+            <a href="{% url 'contracts:contract_list' %}" class="btn btn-secondary btn-lg ms-3">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function addAK() {
+        const container = document.getElementById('ak-container');
+        const totalForms = document.querySelector('#id_aks-TOTAL_FORMS');
+        const formIdx = parseInt(totalForms.value);
+
+        let newFormHtml = document.getElementById('empty-ak-form').innerHTML;
+        newFormHtml = newFormHtml.replace(/__prefix__/g, formIdx);
+
+        container.insertAdjacentHTML('beforeend', newFormHtml);
+        totalForms.value = formIdx + 1;
+    }
+</script>
+{% endblock %}

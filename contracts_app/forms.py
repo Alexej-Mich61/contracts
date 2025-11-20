@@ -1,4 +1,9 @@
 # contracts_app/forms.py
+from django import forms
+from django.core.exceptions import ValidationError
+from django.forms import inlineformset_factory
+from .models import Contract, AK, District
+
 
 class ContractForm(forms.ModelForm):
     class Meta:
@@ -14,11 +19,36 @@ class ContractForm(forms.ModelForm):
             'file1', 'file2', 'file3'
         ]
         widgets = {
-            'start_date': forms.DateInput(attrs={'type': 'date'}),
-            'end_date': forms.DateInput(attrs={'type': 'date'}),
-            'note': forms.Textarea(attrs={'rows': 3}),
+            'start_date': forms.DateInput(
+                attrs={'type': 'date', 'class': 'form-control'},
+                format='%Y-%m-%d'  # ← Это важно!
+            ),
+            'end_date': forms.DateInput(
+                attrs={'type': 'date', 'class': 'form-control'},
+                format='%Y-%m-%d'
+            ),
+            'note': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),
             'works': forms.CheckboxSelectMultiple(),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Принудительно ставим правильный формат и значение
+        self.fields['start_date'].input_formats = ['%Y-%m-%d']
+        self.fields['end_date'].input_formats = ['%Y-%m-%d']
+
+        if self.instance and self.instance.pk:
+            if self.instance.start_date:
+                date_str = self.instance.start_date.strftime('%Y-%m-%d')
+                self.fields['start_date'].widget.attrs['value'] = date_str
+                # Принудительно задаём initial (crispy-forms читает отсюда)
+                self.initial['start_date'] = date_str
+
+            if self.instance.end_date:
+                date_str = self.instance.end_date.strftime('%Y-%m-%d')
+                self.fields['end_date'].widget.attrs['value'] = date_str
+                self.initial['end_date'] = date_str
 
     def clean(self):
         cleaned_data = super().clean()
@@ -41,12 +71,11 @@ class AKForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        print("AKForm инициализирован, районов в queryset:", self.fields['district'].queryset.count())
-        # Загружаем ВСЕ районы (или можно фильтровать по региону позже)
         self.fields['district'].queryset = District.objects.select_related('region').order_by('region__name', 'name')
         self.fields['district'].label_from_instance = lambda obj: f"{obj.name} — {obj.region.name}"
 
 
+# Формсет для АК
 AKFormSet = inlineformset_factory(
     Contract,
     AK,

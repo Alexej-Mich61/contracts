@@ -1,0 +1,122 @@
+<!-- templates/contracts/contract_form_content.html -->
+{% load crispy_forms_tags %}
+
+<!-- Заказчик -->
+<div class="card mb-3">
+    <div class="card-header">Заказчик</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">{{ form.customer_name|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.customer_inn|as_crispy_field }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Сроки -->
+<div class="card mb-3">
+    <div class="card-header">Сроки</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">{{ form.start_date|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.end_date|as_crispy_field }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Исполнитель -->
+<div class="card mb-3">
+    <div class="card-header">Исполнитель</div>
+    <div class="card-body">
+        {{ form.implementator|as_crispy_field }}
+    </div>
+</div>
+
+<!-- Чек-лист -->
+<div class="card mb-3">
+    <div class="card-header">Чек-лист</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">{{ form.gos_services|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.oko|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.spolokh|as_crispy_field }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Работы -->
+<div class="card mb-3">
+    <div class="card-header">Работы <span class="text-danger">(обязательно)</span></div>
+    <div class="card-body">
+        {{ form.works|as_crispy_field }}
+    </div>
+</div>
+
+<!-- Суммы -->
+<div class="card mb-3">
+    <div class="card-header">Финансы <small class="text-muted">(необязательно)</small></div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">{{ form.total_amount|as_crispy_field }}</div>
+            <div class="col-md-6">{{ form.monthly_amount|as_crispy_field }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Примечание -->
+<div class="card mb-3">
+    <div class="card-header">Примечание <small class="text-muted">(необязательно)</small></div>
+    <div class="card-body">
+        {{ form.note|as_crispy_field }}
+    </div>
+</div>
+
+<!-- Файлы -->
+<div class="card mb-3">
+    <div class="card-header">Файлы <small class="text-muted">(хотя бы один)</small></div>
+    <div class="card-body">
+        {{ form.file1|as_crispy_field }}
+        {{ form.file2|as_crispy_field }}
+        {{ form.file3|as_crispy_field }}
+    </div>
+</div>
+
+<!-- АК -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <strong>Абонентские комплекты (АК)</strong>
+        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addAK()">+ Добавить</button>
+    </div>
+    <div class="card-body">
+        {{ ak_formset.management_form }}
+        <div id="ak-container">
+            {% for form in ak_formset %}
+                <div class="inline-form bg-white mb-3 p-3 border rounded">
+                    {{ form.id }}
+                    <div class="row align-items-start g-3">
+                        <div class="col-md-3">{{ form.number|as_crispy_field }}</div>
+                        <div class="col-md-4">{{ form.district|as_crispy_field }}</div>
+                        <div class="col-md-4">{{ form.address|as_crispy_field }}</div>
+                        <div class="col-md-1 text-end">
+                            {{ form.DELETE|as_crispy_field }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- Пустая форма для клонирования -->
+        <div id="empty-ak-form" style="display: none;">
+            <div class="inline-form bg-white mb-3 p-3 border rounded">
+                {{ ak_formset.empty_form.id }}
+                <div class="row align-items-start g-3">
+                    <div class="col-md-3">{{ ak_formset.empty_form.number|as_crispy_field }}</div>
+                    <div class="col-md-4">{{ ak_formset.empty_form.district|as_crispy_field }}</div>
+                    <div class="col-md-4">{{ ak_formset.empty_form.address|as_crispy_field }}</div>
+                    <div class="col-md-1 text-end">
+                        {{ ak_formset.empty_form.DELETE|as_crispy_field }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

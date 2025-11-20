@@ -1,4 +1,10 @@
 # contracts_app/admin.py
+from django.contrib import admin
+
+from .models import (
+    Work, Region, District, Implementator, Contract, AK
+)
+
 
 @admin.register(Work)
 class WorkAdmin(admin.ModelAdmin):
@@ -10,7 +16,9 @@ class WorkAdmin(admin.ModelAdmin):
 class RegionAdmin(admin.ModelAdmin):
     list_display = ('name', 'code', 'district_count')
     search_fields = ('name', 'code')
-    def district_count(self, obj): return obj.districts.count()
+
+    def district_count(self, obj):
+        return obj.districts.count()
     district_count.short_description = "Районов"
 
 
@@ -38,8 +46,8 @@ class AKInline(admin.TabularInline):
 
 @admin.register(Contract)
 class ContractAdmin(admin.ModelAdmin):
-    list_display = ('customer_name', 'implementator', 'start_date', 'end_date', 'status', 'file_count', 'ak_count',
-                    'has_note')
+    list_display = ('customer_name', 'implementator', 'start_date', 'end_date', 'status',
+                    'file_count', 'ak_count', 'has_note')
     list_filter = ('status', 'implementator', 'start_date', 'end_date')
     search_fields = ('customer_name', 'customer_inn', 'implementator__name')
     inlines = [AKInline]
