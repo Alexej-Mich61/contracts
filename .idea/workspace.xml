@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="&#10;16. Статические файлы">
-      <change afterPath="$PROJECT_DIR$/static/css/dark-theme.css" afterDir="false" />
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="17. Тёмная тема">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/css/dark-theme.css" beforeDir="false" afterPath="$PROJECT_DIR$/static/css/dark-theme.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -227,7 +226,15 @@
       <option name="project" value="LOCAL" />
       <updated>1763649775517</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="17. Тёмная тема">
+      <option name="closed" value="true" />
+      <created>1763650648807</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1763650648807</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -248,6 +255,7 @@
     <MESSAGE value="&#10;14. Стили, правки" />
     <MESSAGE value="&#10;15. Стили, правки" />
     <MESSAGE value="&#10;16. Статические файлы" />
-    <option name="LAST_COMMIT_MESSAGE" value="&#10;16. Статические файлы" />
+    <MESSAGE value="17. Тёмная тема" />
+    <option name="LAST_COMMIT_MESSAGE" value="17. Тёмная тема" />
   </component>
 </project>

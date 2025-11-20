@@ -1,56 +1,202 @@
 /* static/css/dark-theme.css */
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
+
+/* === ТЁМНАЯ ТЕМА — ПОЛНЫЙ ФОН === */
+.dark-mode,
+.dark-mode body,
+.dark-mode .container,
+.dark-mode .container-fluid {
+    background-color: #0d1117 !important;
+    color: #c9d1d9;
+}
+
+/* Убираем любые белые фоны */
+.dark-mode .bg-white,
+.dark-mode .bg-white,
+.dark-mode .bg-light {
+    background-color: #0d1117 !important;
 }
 
 .dark-mode .navbar {
-    background-color: #1f1f1f !important;
-    border-bottom: 1px solid #333;
+    background-color: #161b22 !important;
+    border-bottom: 1px solid #30363d;
 }
 
+.dark-mode .navbar .navbar-brand,
+.dark-mode .navbar .nav-link,
+.dark-mode .navbar-text {
+    color: #f0f6fc !important;
+}
+
+/* Карточки */
 .dark-mode .card {
-    background-color: #1f1f1f;
-    border-color: #333;
-    color: #e0e0e0;
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
 }
 
 .dark-mode .card-header {
-    background-color: #272727;
-    border-bottom: 1px solid #333;
+    background-color: #21262d;
+    border-bottom: 1px solid #30363d;
+    color: #f0f6fc;
 }
 
-.dark-mode .form-control, .dark-mode .form-select {
-    background-color: #2d2d2d;
-    border-color: #444;
-    color: #e0e0e0;
+/* Формы */
+.dark-mode .form-control,
+.dark-mode .form-select,
+.dark-mode .form-check-input {
+    background-color: #0d1117;
+    border-color: #30363d;
+    color: #c9d1d9;
 }
 
-.dark-mode .form-control:focus, .dark-mode .form-select:focus {
-    background-color: #2d2d2d;
-    color: #e0e0e0;
-    box-shadow: 0 0 0 0.2rem rgba(100, 100, 255, 0.25);
+.dark-mode .form-control:focus,
+.dark-mode .form-select:focus {
+    background-color: #0d1117;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 0.2rem rgba(88, 166, 255, 0.25);
+    color: #c9d1d9;
 }
 
-.dark-mode .table {
-    background-color: #1f1f1f;
-    color: #e0e0e0;
+.dark-mode .form-check-input:checked {
+    background-color: #238636;
+    border-color: #238636;
 }
 
-.dark-mode .text-muted {
-    color: #aaa !important;
+/* Кнопки */
+.dark-mode .btn-primary {
+    background-color: #238636;
+    border-color: #238636;
 }
 
-.dark-mode .bg-light {
-    background-color: #2d2d2d !important;
+.dark-mode .btn-primary:hover {
+    background-color: #2ea043;
+    border-color: #2ea043;
+}
+
+.dark-mode .btn-success {
+    background-color: #238636;
+    border-color: #238636;
 }
 
 .dark-mode .btn-secondary {
-    background-color: #444;
-    border-color: #555;
+    background-color: #484f58;
+    border-color: #6e7681;
+    color: #c9d1d9;
 }
 
+.dark-mode .btn-outline-primary {
+    color: #58a6ff;
+    border-color: #58a6ff;
+}
+
+.dark-mode .btn-outline-primary:hover {
+    background-color: #1f6feb;
+    border-color: #1f6feb;
+}
+
+/* Таблицы */
+.dark-mode .table {
+    --bs-table-bg: #161b22;
+    --bs-table-striped-bg: #1f242a;
+    --bs-table-hover-bg: #21262d;
+    color: #c9d1d9;
+}
+
+.dark-mode .table th,
+.dark-mode .table td {
+    border-color: #30363d;
+}
+
+/* Пагинация */
+.dark-mode .page-link {
+    background-color: #161b22;
+    border-color: #30363d;
+    color: #58a6ff;
+}
+
+.dark-mode .page-item.active .page-link {
+    background-color: #1f6feb;
+    border-color: #1f6feb;
+}
+
+.dark-mode .page-item.disabled .page-link {
+    color: #8b949e;
+}
+
+/* Бейджи */
+.dark-mode .badge.bg-success { background-color: #238636 !important; }
+.dark-mode .badge.bg-danger  { background-color: #da3633 !important; }
+.dark-mode .badge.bg-info    { background-color: #388bfd !important; }
+.dark-mode .badge.bg-warning { background-color: #9e6a03 !important; color: #fff; }
+.dark-mode .badge.bg-secondary { background-color: #484f58 !important; }
+
+/* Ссылки */
+.dark-mode a {
+    color: #58a6ff;
+}
+
+.dark-mode a:hover {
+    color: #7bb8ff;
+}
+
+/* Текст */
+.dark-mode .text-muted {
+    color: #8b949e !important;
+}
+
+.dark-mode .text-success {
+    color: #3fb950 !important;
+}
+
+.dark-mode .text-danger {
+    color: #f85149 !important;
+}
+
+/* Toast-уведомления */
 .dark-mode .toast {
-    background-color: #333;
-    color: #fff;
+    background-color: #21262d;
+    border: 1px solid #30363d;
+    color: #f0f6fc;
+}
+
+.dark-mode .toast-header {
+    background-color: #30363d;
+    color: #f0f6fc;
+}
+
+/* Модальные окна */
+.dark-mode .modal-content {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+}
+
+.dark-mode .modal-header {
+    border-bottom: 1px solid #30363d;
+}
+
+.dark-mode .modal-footer {
+    border-top: 1px solid #30363d;
+}
+
+/* Чекбоксы и переключатели */
+.dark-mode .form-switch .form-check-input:checked {
+    background-color: #238636;
+    border-color: #238636;
+}
+
+/* Подсветка при обновлении чек-листа */
+.dark-mode .contract-card {
+    transition: background-color 0.4s;
+}
+
+/* Любой светлый фон → тёмный */
+.dark-mode .bg-white,
+.dark-mode .bg-light {
+    background-color: #161b22 !important;
+}
+
+/* Тени */
+.dark-mode .shadow-sm {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5) !important;
 }
