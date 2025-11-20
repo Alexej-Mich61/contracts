@@ -1,0 +1,56 @@
+/* static/css/dark-theme.css */
+body.dark-mode {
+    background-color: #121212;
+    color: #e0e0e0;
+}
+
+.dark-mode .navbar {
+    background-color: #1f1f1f !important;
+    border-bottom: 1px solid #333;
+}
+
+.dark-mode .card {
+    background-color: #1f1f1f;
+    border-color: #333;
+    color: #e0e0e0;
+}
+
+.dark-mode .card-header {
+    background-color: #272727;
+    border-bottom: 1px solid #333;
+}
+
+.dark-mode .form-control, .dark-mode .form-select {
+    background-color: #2d2d2d;
+    border-color: #444;
+    color: #e0e0e0;
+}
+
+.dark-mode .form-control:focus, .dark-mode .form-select:focus {
+    background-color: #2d2d2d;
+    color: #e0e0e0;
+    box-shadow: 0 0 0 0.2rem rgba(100, 100, 255, 0.25);
+}
+
+.dark-mode .table {
+    background-color: #1f1f1f;
+    color: #e0e0e0;
+}
+
+.dark-mode .text-muted {
+    color: #aaa !important;
+}
+
+.dark-mode .bg-light {
+    background-color: #2d2d2d !important;
+}
+
+.dark-mode .btn-secondary {
+    background-color: #444;
+    border-color: #555;
+}
+
+.dark-mode .toast {
+    background-color: #333;
+    color: #fff;
+}
