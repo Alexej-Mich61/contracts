@@ -9,28 +9,22 @@
 <div class="container-fluid mt-4">
     <div class="row">
         <div class="col-12">
-            <h1 class="mb-4">Долгосрочные договоры</h1>
+            <!--<h1 class="mb-4">Долгосрочные договоры</h1>-->
 
             <!-- Фильтры -->
-            <form method="get" class="row g-3 mb-4 align-items-end">
-                <div class="col-md-5">
-                    <input type="text" name="q" class="form-control" placeholder="Поиск..." value="{{ search_query }}">
+            <div class="card mb-4">
+                <div class="card-header" data-bs-toggle="collapse" href="#filterCollapse" role="button">
+                    Фильтры <i class="fas fa-chevron-down"></i>
                 </div>
-                <div class="col-md-2">
-                    <select name="status" class="form-select">
-                        <option value="">Все статусы</option>
-                        <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>Ожидание</option>
-                        <option value="active" {% if selected_status == 'active' %}selected{% endif %}>Действует</option>
-                        <option value="completed" {% if selected_status == 'completed' %}selected{% endif %}>Завершён</option>
-                    </select>
+                <div class="collapse show" id="filterCollapse">
+                    <div class="card-body">
+                        {% include "contracts/includes/contract_filter_form.html" with implementators=implementators all_works=all_works %}
+                    </div>
                 </div>
-                <div class="col-md-2">
-                    <button type="submit" class="btn btn-primary w-100">Найти</button>
-                </div>
-                <div class="col-md-3">
-                    <a href="{% url 'contracts:contract_add' %}" class="btn btn-success w-100">+ Новый договор</a>
-                </div>
-            </form>
+            </div>
+            <div class="col-md-3">
+                <a href="{% url 'contracts:contract_add' %}" class="btn btn-success w-100">+ Новый договор</a>
+            </div>
 
             {% if contracts %}
             {% for contract in contracts %}

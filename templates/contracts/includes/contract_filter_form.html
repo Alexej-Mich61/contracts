@@ -1,0 +1,114 @@
+<!-- templates/contracts/includes/contract_filter_form.html -->
+{# templates/contracts/includes/contract_filter_form.html #}
+<form method="get" class="card border-primary mb-4">
+    <div class="card-header bg-primary text-white" data-bs-toggle="collapse" href="#filterCollapse" role="button" aria-expanded="true">
+        <strong>Фильтры</strong>
+        <i class="fas fa-chevron-down float-end"></i>
+    </div>
+
+    <div class="collapse show" id="filterCollapse">
+        <div class="card-body">
+            <div class="row g-3">
+
+                <!-- 1. Поиск по заказчику / ИНН -->
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label small fw-bold">Заказчик или ИНН</label>
+                    <input type="text" name="q" class="form-control" placeholder="Например: Роснефть или 7707083893"
+                           value="{{ request.GET.q|default:'' }}">
+                </div>
+
+                <!-- 2. Номер АК -->
+                <div class="col-lg-2 col-md-4">
+                    <label class="form-label small fw-bold">Номер АК</label>
+                    <input type="number" name="ak_number" class="form-control" placeholder="123456"
+                           value="{{ request.GET.ak_number|default:'' }}">
+                </div>
+
+                <!-- 3. Район (из АК) -->
+                <div class="col-lg-3 col-md-6">
+                    <label class="form-label small fw-bold">Район</label>
+                    <input type="text" name="ak_district" class="form-control" placeholder="Например: Центральный"
+                           value="{{ request.GET.ak_district|default:'' }}">
+                </div>
+
+                <!-- 4. Адрес АК -->
+                <div class="col-lg-3 col-md-6">
+                    <label class="form-label small fw-bold">Адрес АК</label>
+                    <input type="text" name="ak_address" class="form-control" placeholder="ул. Ленина, д. 10"
+                           value="{{ request.GET.ak_address|default:'' }}">
+                </div>
+
+                <!-- 5. Статус -->
+                <div class="col-lg-3 col-md-4">
+                    <label class="form-label small fw-bold">Статус</label>
+                    <select name="status" class="form-select">
+                        <option value="">Все статусы</option>
+                        <option value="pending" {% if request.GET.status == 'pending' %}selected{% endif %}>Ожидание</option>
+                        <option value="active" {% if request.GET.status == 'active' %}selected{% endif %}>Действует</option>
+                        <option value="completed" {% if request.GET.status == 'completed' %}selected{% endif %}>Завершён</option>
+                    </select>
+                </div>
+
+                <!-- 6. Исполнитель -->
+                <div class="col-lg-4 col-md-6">
+                    <label class="form-label small fw-bold">Исполнитель</label>
+                    <select name="implementator" class="form-select">
+                        <option value="">Все исполнители</option>
+                        {% for impl in implementators %}
+                            <option value="{{ impl.pk }}"
+                                    {% if request.GET.implementator == impl.pk|stringformat:"s" %}selected{% endif %}>
+                                {{ impl.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- 7. Работы (множественный выбор) -->
+                <div class="col-lg-5 col-md-8">
+                    <label class="form-label small fw-bold">Работы (можно несколько)</label>
+                    <select name="works" multiple class="form-select" size="4">
+                        {% for work in all_works %}
+                            <option value="{{ work.pk }}"
+                                    {% if work.pk|stringformat:"s" in request.GET.works %}selected{% endif %}>
+                                {{ work.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                    <div class="form-text">Зажми Ctrl (или Cmd) для выбора нескольких</div>
+                </div>
+
+                <!-- 8. Чек-лист -->
+                <div class="col-12">
+                    <label class="form-label small fw-bold">Чек-лист (должен быть включён):</label>
+                    <div class="d-flex gap-4 flex-wrap">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="gos_services" id="gos"
+                                   {% if request.GET.gos_services %}checked{% endif %}>
+                            <label class="form-check-label" for="gos">Госуслуги</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="oko" id="oko"
+                                   {% if request.GET.oko %}checked{% endif %}>
+                            <label class="form-check-label" for="oko">ОКО</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="spolokh" id="spolokh"
+                                   {% if request.GET.spolokh %}checked{% endif %}>
+                            <label class="form-check-label" for="spolokh">Сполох</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Кнопки -->
+                <div class="col-12 mt-3">
+                    <button type="submit" class="btn btn-primary me-2">
+                        Применить фильтры
+                    </button>
+                    <a href="{% url 'contracts:contract_list' %}" class="btn btn-outline-secondary">
+                        Сбросить всё
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

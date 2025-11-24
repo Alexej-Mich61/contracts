@@ -4,42 +4,79 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.db.models import Q
-from .models import Contract
+from django.db.models import Q, Count
+from django.shortcuts import render
+from .models import Contract, Implementator, Work
 from .forms import ContractForm, AKFormSet
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 
 
 
-class ContractListView(ListView):
-    model = Contract
-    template_name = 'contracts/contract_list.html'
-    context_object_name = 'contracts'
-    paginate_by = 10
-    ordering = ['-start_date']
+def contract_list(request):
+    # Базовый запрос
+    contracts = Contract.objects.select_related('implementator')\
+                                .prefetch_related('aks', 'works')\
+                                .annotate(ak_count=Count('aks'))
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        query = self.request.GET.get('q')
-        status = self.request.GET.get('status')
+    # Справочники для фильтров
+    implementators = Implementator.objects.all().order_by('name')
+    all_works = Work.objects.all().order_by('name')
 
-        if query:
-            queryset = queryset.filter(
-                Q(customer_name__icontains=query) |
-                Q(customer_inn__icontains=query) |
-                Q(implementator__name__icontains=query)
+    # === ФИЛЬТРАЦИЯ ===
+    if request.GET:  # ← Только если есть параметры в URL
+        # 1. Поиск по заказчику / ИНН
+        if q := request.GET.get('q'):
+            contracts = contracts.filter(
+                Q(customer_name__icontains=q) | Q(customer_inn__icontains=q)
             )
-        if status:
-            queryset = queryset.filter(status=status)
 
-        return queryset
+        # 2. Номер АК
+        if ak_number := request.GET.get('ak_number'):
+            contracts = contracts.filter(aks__number=ak_number)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['search_query'] = self.request.GET.get('q', '')
-        context['selected_status'] = self.request.GET.get('status', '')
-        return context
+        # 3. Район АК
+        if ak_district := request.GET.get('ak_district'):
+            contracts = contracts.filter(aks__district__name__icontains=ak_district)
+
+        # 4. Адрес АК
+        if ak_address := request.GET.get('ak_address'):
+            contracts = contracts.filter(aks__address__icontains=ak_address)
+
+        # 5. Статус
+        if status := request.GET.get('status'):
+            contracts = contracts.filter(status=status)
+
+        # 6. Исполнитель
+        if impl := request.GET.get('implementator'):
+            contracts = contracts.filter(implementator_id=impl)
+
+        # 7. Работы (множественный выбор)
+        if works := request.GET.getlist('works'):  # ← getlist! Важно!
+            contracts = contracts.filter(works__pk__in=works)
+
+        # 8. Чек-лист (хотя бы один включён)
+        checklist_filters = Q()
+        if request.GET.get('gos_services'):
+            checklist_filters |= Q(gos_services=True)
+        if request.GET.get('oko'):
+            checklist_filters |= Q(oko=True)
+        if request.GET.get('spolokh'):
+            checklist_filters |= Q(spolokh=True)
+        if checklist_filters:
+            contracts = contracts.filter(checklist_filters)
+
+        # Убираем дубли (из-за join по aks/works)
+        contracts = contracts.distinct()
+
+    # Пагинация (можно добавить потом, пока без неё)
+    context = {
+        'contracts': contracts,
+        'implementators': implementators,
+        'all_works': all_works,
+    }
+    return render(request, 'contracts/contract_list.html', context)
+
 
 
 class ContractDetailView(DetailView):
