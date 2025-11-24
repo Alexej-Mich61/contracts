@@ -70,10 +70,10 @@ def validate_file_size(value):
     if value.size > 20 * 1024 * 1024:  # 20 МБ
         raise ValidationError("Файл не должен превышать 20 МБ.")
 
-
 # === ДОГОВОР ===
 class Contract(models.Model):
     STATUS_CHOICES = (
+        ('pending', 'Ожидание'),  # ← НОВЫЙ СТАТУС
         ('active', 'Действует'),
         ('completed', 'Завершён'),
     )
@@ -89,12 +89,13 @@ class Contract(models.Model):
     end_date = models.DateField(verbose_name="Дата окончания")
     implementator = models.ForeignKey(Implementator, on_delete=models.PROTECT, verbose_name="Исполнитель")
 
+
     # Чек-лист
     gos_services = models.BooleanField(default=False, verbose_name="Госуслуги")
     oko = models.BooleanField(default=False, verbose_name="ОКО")
     spolokh = models.BooleanField(default=False, verbose_name="Сполох")
 
-    # НОВОЕ: Примечание (до 500 символов)
+    # Примечание
     note = models.CharField(
         max_length=500,
         blank=True,
@@ -103,7 +104,7 @@ class Contract(models.Model):
         help_text="Дополнительная информация (не обязательно)"
     )
 
-    # НОВОЕ: Обязательное поле "Работы"
+    # Работы
     works = models.ManyToManyField(
         Work,
         verbose_name="Работы",
@@ -145,8 +146,15 @@ class Contract(models.Model):
     file2 = models.FileField(upload_to='contracts/files/', blank=True, null=True, validators=[validate_file_size], verbose_name="Файл 2")
     file3 = models.FileField(upload_to='contracts/files/', blank=True, null=True, validators=[validate_file_size], verbose_name="Файл 3")
 
-    # Автостатус
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, editable=False, verbose_name="Статус")
+    # СТАТУС АВТОМАТИЧЕСКИЙ
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default='pending',        # ← теперь по умолчанию "Ожидание"
+        editable=False,
+        verbose_name="Статус"
+    )
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлён")
 
@@ -163,12 +171,19 @@ class Contract(models.Model):
             raise ValidationError("Дата начала не может быть позже даты окончания.")
 
     def save(self, *args, **kwargs):
-        # Автостатус
         today = timezone.now().date()
-        if self.end_date and today > self.end_date:
-            self.status = 'completed'
+
+        # ← УМНАЯ ЛОГИКА СТАТУСА
+        if self.start_date and self.end_date:
+            if today < self.start_date:
+                self.status = 'pending'      # ещё не начался
+            elif self.start_date <= today <= self.end_date:
+                self.status = 'active'       # сейчас действует
+            else:
+                self.status = 'completed'    # закончился
         else:
-            self.status = 'active'
+            self.status = 'pending'  # если даты не указаны
+
         super().save(*args, **kwargs)
 
     def file_count(self):
@@ -178,7 +193,7 @@ class Contract(models.Model):
 
 # === АБОНЕНТСКИЙ КОМПЛЕКТ (АК) ===
 class AK(models.Model):
-    contract = models.ForeignKey(Contract, on_delete=models.CASCADE, related_name='aks', verbose_name="Договор")
+    contract = models.ForeignKey('Contract', on_delete=models.CASCADE, related_name='aks', verbose_name="Договор")
     number = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99999999)],
         verbose_name="Номер АК",

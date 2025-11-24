@@ -19,6 +19,7 @@
                 <div class="col-md-2">
                     <select name="status" class="form-select">
                         <option value="">Все статусы</option>
+                        <option value="pending" {% if selected_status == 'pending' %}selected{% endif %}>Ожидание</option>
                         <option value="active" {% if selected_status == 'active' %}selected{% endif %}>Действует</option>
                         <option value="completed" {% if selected_status == 'completed' %}selected{% endif %}>Завершён</option>
                     </select>
@@ -49,9 +50,14 @@
                             <div><strong>Исполнитель:</strong> {{ contract.implementator }}</div>
                             <div><strong>Срок:</strong> {{ contract.start_date }} — {{ contract.end_date }}</div>
                             <div class="mt-2 d-flex align-items-center gap-2 flex-wrap">
-                                    <span class="badge rounded-pill bg-{% if contract.status == 'active' %}success{% else %}danger{% endif %} fs-6">
-                                        {% if contract.status == 'active' %}Действует{% else %}Завершён{% endif %}
-                                    </span>
+                                    <span class="badge rounded-pill fs-6
+                                        {% if contract.status == 'active' %}bg-success
+                                        {% elif contract.status == 'pending' %}bg-secondary
+                                        {% else %}bg-danger{% endif %}">
+                                        {% if contract.status == 'active' %}Действует
+                                        {% elif contract.status == 'pending' %}Ожидание
+                                        {% else %}Завершён{% endif %}
+                                     </span>
                                 <span class="badge bg-info fs-6">{{ contract.aks.count }} АК</span>
                                 {% if contract.file_count > 0 %}
                                 <span class="badge bg-secondary fs-6">{{ contract.file_count }} файл{{ contract.file_count|pluralize:",а,ов" }}</span>
