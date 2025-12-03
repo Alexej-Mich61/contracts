@@ -13,28 +13,28 @@
                 <!-- 1. Поиск по заказчику / ИНН -->
                 <div class="col-lg-4 col-md-6">
                     <label class="form-label small fw-bold">Заказчик или ИНН</label>
-                    <input type="text" name="q" class="form-control" placeholder="Например: Роснефть или 7707083893"
+                    <input type="text" name="q" class="form-control" placeholder="Например: МБДОУ Детский Сад №1 или 6149007114"
                            value="{{ request.GET.q|default:'' }}">
                 </div>
 
                 <!-- 2. Номер АК -->
                 <div class="col-lg-2 col-md-4">
                     <label class="form-label small fw-bold">Номер АК</label>
-                    <input type="number" name="ak_number" class="form-control" placeholder="123456"
+                    <input type="number" name="ak_number" class="form-control" placeholder="Например: 6001"
                            value="{{ request.GET.ak_number|default:'' }}">
                 </div>
 
                 <!-- 3. Район (из АК) -->
                 <div class="col-lg-3 col-md-6">
                     <label class="form-label small fw-bold">Район</label>
-                    <input type="text" name="ak_district" class="form-control" placeholder="Например: Центральный"
+                    <input type="text" name="ak_district" class="form-control" placeholder="Например: Миллеровский"
                            value="{{ request.GET.ak_district|default:'' }}">
                 </div>
 
                 <!-- 4. Адрес АК -->
                 <div class="col-lg-3 col-md-6">
                     <label class="form-label small fw-bold">Адрес АК</label>
-                    <input type="text" name="ak_address" class="form-control" placeholder="ул. Ленина, д. 10"
+                    <input type="text" name="ak_address" class="form-control" placeholder="Например: Ленина, 10"
                            value="{{ request.GET.ak_address|default:'' }}">
                 </div>
 
@@ -74,12 +74,12 @@
                             </option>
                         {% endfor %}
                     </select>
-                    <div class="form-text">Зажми Ctrl (или Cmd) для выбора нескольких</div>
+                    <div class="form-text">Зажмите Ctrl для выбора нескольких</div>
                 </div>
 
                 <!-- 8. Чек-лист -->
                 <div class="col-12">
-                    <label class="form-label small fw-bold">Чек-лист (должен быть включён):</label>
+                    <label class="form-label small fw-bold">Чек-лист (выберите нужный):</label>
                     <div class="d-flex gap-4 flex-wrap">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="gos_services" id="gos"

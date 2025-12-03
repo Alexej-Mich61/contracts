@@ -1,5 +1,6 @@
 <!-- templates/contracts/contract_list.html -->
 {% extends "base.html" %}
+{% load url_tags %}
 {% load static humanize file_utils %}
 
 {% block title %}Долгосрочные договоры{% endblock %}
@@ -9,41 +10,50 @@
 <div class="container-fluid mt-4">
     <div class="row">
         <div class="col-12">
-            <!--<h1 class="mb-4">Долгосрочные договоры</h1>-->
 
-            <!-- Фильтры -->
+            <!-- Фильтры-->
             <div class="card mb-4">
-                <div class="card-header" data-bs-toggle="collapse" href="#filterCollapse" role="button">
-                    Фильтры <i class="fas fa-chevron-down"></i>
+                <div class="card-header d-flex justify-content-between align-items-center"
+                     data-bs-toggle="collapse"
+                     data-bs-target="#filterCollapseNew"
+                     aria-expanded="false"
+                     role="button"
+                     style="cursor: pointer;">
+                    <strong>Фильтры</strong>
+                    <i class="fas fa-chevron-down transition"></i>
                 </div>
-                <div class="collapse show" id="filterCollapse">
+
+                <div class="collapse" id="filterCollapseNew">
                     <div class="card-body">
                         {% include "contracts/includes/contract_filter_form.html" with implementators=implementators all_works=all_works %}
                     </div>
                 </div>
             </div>
-            <div class="col-md-3">
-                <a href="{% url 'contracts:contract_add' %}" class="btn btn-success w-100">+ Новый договор</a>
+
+            <!-- Кнопка добавления -->
+            <div class="mb-4">
+                <a href="{% url 'contracts:contract_add' %}" class="btn btn-success">+ Новый договор</a>
             </div>
 
-            {% if contracts %}
-            {% for contract in contracts %}
-            <div class="contract-card p-3 bg-white shadow-sm">
-                <div class="row align-items-start g-3">
+            <!-- Список договоров -->
+            {% if page_obj %}
+                {% for contract in page_obj %}
+                <div class="contract-card p-3 bg-white shadow-sm mb-3">
+                    <div class="row align-items-start g-3">
 
-                    <!-- Левая часть -->
-                    <div class="col-lg-4 col-xl-3">
-                        <h5 class="mb-1">
-                            <a href="{% url 'contracts:contract_detail' contract.pk %}"
-                               class="text-decoration-none text-dark fw-bold">
-                                {{ contract.customer_name }}
-                            </a>
-                        </h5>
-                        <div class="small text-muted">
-                            <div><strong>ИНН:</strong> {{ contract.customer_inn }}</div>
-                            <div><strong>Исполнитель:</strong> {{ contract.implementator }}</div>
-                            <div><strong>Срок:</strong> {{ contract.start_date }} — {{ contract.end_date }}</div>
-                            <div class="mt-2 d-flex align-items-center gap-2 flex-wrap">
+                        <!-- Левая часть -->
+                        <div class="col-lg-4 col-xl-3">
+                            <h5 class="mb-1">
+                                <a href="{% url 'contracts:contract_detail' contract.pk %}"
+                                   class="text-decoration-none text-dark fw-bold">
+                                    {{ contract.customer_name }}
+                                </a>
+                            </h5>
+                            <div class="small text-muted">
+                                <div><strong>ИНН:</strong> {{ contract.customer_inn }}</div>
+                                <div><strong>Исполнитель:</strong> {{ contract.implementator }}</div>
+                                <div><strong>Срок:</strong> {{ contract.start_date }} — {{ contract.end_date }}</div>
+                                <div class="mt-2 d-flex align-items-center gap-2 flex-wrap">
                                     <span class="badge rounded-pill fs-6
                                         {% if contract.status == 'active' %}bg-success
                                         {% elif contract.status == 'pending' %}bg-secondary
@@ -51,144 +61,163 @@
                                         {% if contract.status == 'active' %}Действует
                                         {% elif contract.status == 'pending' %}Ожидание
                                         {% else %}Завершён{% endif %}
-                                     </span>
-                                <span class="badge bg-info fs-6">{{ contract.aks.count }} АК</span>
-                                {% if contract.file_count > 0 %}
-                                <span class="badge bg-secondary fs-6">{{ contract.file_count }} файл{{ contract.file_count|pluralize:",а,ов" }}</span>
+                                    </span>
+                                    <span class="badge bg-info fs-6">{{ contract.aks.count }} АК</span>
+                                    {% if contract.file_count > 0 %}
+                                        <span class="badge bg-secondary fs-6">
+                                            {{ contract.file_count }} файл{{ contract.file_count|pluralize:",а,ов" }}
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Чек-лист -->
+                        <div class="col-auto pe-4">
+                            <form method="post" action="{% url 'contracts:update_checklist' contract.pk %}"
+                                  class="checklist-form" data-contract-id="{{ contract.pk }}">
+                                {% csrf_token %}
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" name="gos_services"
+                                           {% if contract.gos_services %}checked{% endif %}
+                                           onchange="handleChecklistChange(this)">
+                                    <label class="form-check-label small fw-bold text-primary">Госуслуги</label>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" name="oko"
+                                           {% if contract.oko %}checked{% endif %}
+                                           onchange="handleChecklistChange(this)">
+                                    <label class="form-check-label small fw-bold text-primary">ОКО</label>
+                                </div>
+                                <div class="form-check form-switch mb-2">
+                                    <input class="form-check-input" type="checkbox" name="spolokh"
+                                           {% if contract.spolokh %}checked{% endif %}
+                                           onchange="handleChecklistChange(this)">
+                                    <label class="form-check-label small fw-bold text-primary">Сполох</label>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- АК -->
+                        <div class="col-lg-4 col-xl-5 ps-4">
+                            {% if contract.aks.exists %}
+                                <div class="ak-container">
+                                    {% for ak in contract.aks.all %}
+                                        <div class="ak-item text-muted small" title="{{ ak.address }}">
+                                            <strong>АК {{ ak.number }}</strong> — {{ ak.district }} — {{ ak.address|truncatechars:60 }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <span class="text-muted small">Нет АК</span>
+                            {% endif %}
+                        </div>
+
+                        <!-- Финансы -->
+                        <div class="col-auto text-center">
+                            {% if contract.total_amount or contract.monthly_amount %}
+                                <div class="small text-muted mb-1">Финансы:</div>
+                                {% if contract.total_amount %}
+                                    <div class="fw-bold text-success fs-5">
+                                        {{ contract.total_amount|floatformat:0|intcomma }} ₽
+                                    </div>
                                 {% endif %}
-                            </div>
+                                {% if contract.monthly_amount %}
+                                    <div class="small text-secondary">
+                                        в мес: {{ contract.monthly_amount|floatformat:0|intcomma }} ₽
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <span class="text-muted small">—</span>
+                            {% endif %}
                         </div>
-                    </div>
 
-                    <!-- Чек-лист -->
-                    <div class="col-auto pe-4">
-                        <form method="post" action="{% url 'contracts:update_checklist' contract.pk %}"
-                              class="checklist-form" data-contract-id="{{ contract.pk }}">
-                            {% csrf_token %}
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" name="gos_services"
-                                       {% if contract.gos_services %}checked{% endif %}
-                                       onchange="handleChecklistChange(this)">
-                                <label class="form-check-label small fw-bold text-primary">Госуслуги</label>
-                            </div>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" name="oko"
-                                       {% if contract.oko %}checked{% endif %} onchange="handleChecklistChange(this)">
-                                <label class="form-check-label small fw-bold text-primary">ОКО</label>
-                            </div>
-                            <div class="form-check form-switch mb-2">
-                                <input class="form-check-input" type="checkbox" name="spolokh"
-                                       {% if contract.spolokh %}checked{% endif %} onchange="handleChecklistChange(this)">
-                                <label class="form-check-label small fw-bold text-primary">Сполох</label>
-                            </div>
-                        </form>
-                    </div>
-
-                    <!-- АК -->
-                    <div class="col-lg-4 col-xl-5 ps-4">
-                        {% if contract.aks.exists %}
-                        <div class="ak-container">
-                            {% for ak in contract.aks.all %}
-                            <div class="ak-item text-muted" title="{{ ak.address }}">
-                                <strong>АК {{ ak.number }}</strong> — {{ ak.district }} — {{ ak.address|truncatechars:60 }}
-                            </div>
-                            {% endfor %}
-                        </div>
-                        {% else %}
-                        <span class="text-muted small">Нет АК</span>
-                        {% endif %}
-                    </div>
-
-                    <!-- Финансы -->
-                    <div class="col-auto text-center">
-                        {% if contract.total_amount or contract.monthly_amount %}
-                        <div class="small text-muted mb-1">Финансы:</div>
-                        {% if contract.total_amount %}
-                        <div class="fw-bold text-success fs-5">{{ contract.total_amount|floatformat:0|intcomma }} ₽
-                        </div>
-                        {% endif %}
-                        {% if contract.monthly_amount %}
-                        <div class="small text-secondary">в мес: {{ contract.monthly_amount|floatformat:0|intcomma }} ₽
-                        </div>
-                        {% endif %}
-                        {% else %}
-                        <span class="text-muted small">—</span>
-                        {% endif %}
-                    </div>
-
-                    <!-- Правый блок -->
-                    <div class="col-lg-3 col-xl-2 text-end ms-auto">
-                        <div class="d-flex justify-content-end align-items-center gap-3 flex-wrap">
-                            {% if contract.note %}
-                            <span class="note-icon" title="{{ contract.note|truncatechars:100 }}">
+                        <!-- Правый блок -->
+                        <div class="col-lg-3 col-xl-2 text-end ms-auto">
+                            <div class="d-flex justify-content-end align-items-center gap-3 flex-wrap">
+                                {% if contract.note %}
+                                    <span class="note-icon" title="{{ contract.note|truncatechars:100 }}">
                                         <svg width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                                             <path d="M14 1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
                                             <path d="M4 3.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5z"/>
                                         </svg>
                                     </span>
-                            {% endif %}
+                                {% endif %}
 
-                            {% if contract.works.exists %}
-                            <div class="d-flex gap-1 flex-wrap">
-                                {% for work in contract.works.all %}
-                                <span class="badge bg-info fs-6">{{ work.name }}</span>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
+                                {% if contract.works.exists %}
+                                    <div class="d-flex gap-1 flex-wrap">
+                                        {% for work in contract.works.all %}
+                                            <span class="badge bg-info fs-6">{{ work.name }}</span>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
 
-                            <div>
-                                {% if contract.file1 %}<a href="{{ contract.file1.url }}" target="_blank"
-                                                          class="file-icon text-primary"
-                                                          title="{{ contract.file1.name }}">
-                                {{ contract.file1.name|get_extension|upper }}</a>{% endif %}
-                                {% if contract.file2 %}<a href="{{ contract.file2.url }}" target="_blank"
-                                                          class="file-icon text-success"
-                                                          title="{{ contract.file2.name }}">
-                                {{ contract.file2.name|get_extension|upper }}</a>{% endif %}
-                                {% if contract.file3 %}<a href="{{ contract.file3.url }}" target="_blank"
-                                                          class="file-icon text-warning"
-                                                          title="{{ contract.file3.name }}">
-                                {{ contract.file3.name|get_extension|upper }}</a>{% endif %}
+                                <div>
+                                    {% if contract.file1 %}<a href="{{ contract.file1.url }}" target="_blank" class="file-icon text-primary" title="{{ contract.file1.name }}">{{ contract.file1.name|get_extension|upper }}</a>{% endif %}
+                                    {% if contract.file2 %}<a href="{{ contract.file2.url }}" target="_blank" class="file-icon text-success" title="{{ contract.file2.name }}">{{ contract.file2.name|get_extension|upper }}</a>{% endif %}
+                                    {% if contract.file3 %}<a href="{{ contract.file3.url }}" target="_blank" class="file-icon text-warning" title="{{ contract.file3.name }}">{{ contract.file3.name|get_extension|upper }}</a>{% endif %}
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            {% endfor %}
+                {% endfor %}
 
-            {% if is_paginated %}
-            <nav class="mt-5">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">«</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled"><span class="page-link">«</span></li>
-                    {% endif %}
+                <!-- ПАГИНАЦИЯ -->
+                {% if is_paginated %}
+                <nav aria-label="Пагинация" class="mt-5">
+                    <ul class="pagination justify-content-center">
 
-                    <li class="page-item disabled">
-            <span class="page-link">
-                Стр. {{ page_obj.number }} из {{ paginator.num_pages }}
-            </span>
-                    </li>
+                        {% if page_obj.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% url_replace page=page_obj.previous_page_number %}">← Назад</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">← Назад</span></li>
+                        {% endif %}
 
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link"
-                           href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.status %}&status={{ request.GET.status }}{% endif %}">»</a>
-                    </li>
-                    {% else %}
-                    <li class="page-item disabled"><span class="page-link">»</span></li>
-                    {% endif %}
-                </ul>
-            </nav>
-            {% endif %}
+                        {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                                <li class="page-item active" aria-current="page">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% url_replace page=num %}">{{ num }}</a>
+                                </li>
+                            {% elif num == 1 or num == page_obj.paginator.num_pages %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% url_replace page=num %}">{{ num }}</a>
+                                </li>
+                            {% elif num == page_obj.number|add:'-3' or num == page_obj.number|add:'3' %}
+                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% url_replace page=page_obj.next_page_number %}">Вперёд →</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">Вперёд →</span></li>
+                        {% endif %}
+
+                    </ul>
+                </nav>
+
+                <div class="text-center text-muted mb-5">
+                    Показано {{ page_obj.start_index }}–{{ page_obj.end_index }}
+                    из {{ page_obj.paginator.count }} договоров
+                </div>
+                {% endif %}
 
             {% else %}
-            <p class="text-muted text-center">Договоры не найдены.</p>
+                <div class="text-center py-5">
+                    <h4 class="text-muted">Договоры не найдены</h4>
+                    <a href="{% url 'contracts:contract_list' %}" class="btn btn-primary mt-3">Сбросить фильтры</a>
+                </div>
             {% endif %}
+
         </div>
     </div>
 </div>

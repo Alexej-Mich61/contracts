@@ -26,6 +26,13 @@
     border-radius: 10px;
 }
 
+/* .pointer-events-none { pointer-events: none; } */
+
+/* Стрелка фильтров */
+.transition { transition: transform .2s ease; }
+.card-header[aria-expanded="true"] .transition { transform: rotate(180deg); }
+.card-header { user-select: none; } /* чтобы текст не выделялся при клике */
+
 /* Иконка примечания */
 .note-icon {
     opacity: 0.7;
