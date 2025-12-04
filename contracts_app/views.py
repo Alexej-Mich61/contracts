@@ -92,12 +92,11 @@ class ContractDetailView(DetailView):
     template_name = 'contracts/contract_detail.html'
     context_object_name = 'contract'
 
-class ContractCreateView(SuccessMessageMixin, CreateView):
+class ContractCreateView(CreateView):
     model = Contract
     form_class = ContractForm
     template_name = 'contracts/contract_form.html'
     success_url = reverse_lazy('contracts:contract_list')
-    success_message = "Договор успешно создан!"
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -108,21 +107,16 @@ class ContractCreateView(SuccessMessageMixin, CreateView):
         return data
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        ak_formset = context['ak_formset']
-
-        # Сохраняем контракт
-        self.object = form.save()
-
-        # Привязываем формсет к сохранённому объекту
+        response = super().form_valid(form)
+        # Сохраняем АК формсет
+        ak_formset = self.get_context_data()['ak_formset']
         ak_formset.instance = self.object
         if ak_formset.is_valid():
             ak_formset.save()
-        else:
-            # Если АК невалидны — возвращаем форму с ошибками
-            return self.form_invalid(form)
 
-        return super().form_valid(form)
+        # Добавляем сообщение в сессию
+        messages.success(self.request, "Договор успешно создан!")
+        return response
 
     def form_invalid(self, form):
         # Добавляем формсет в контекст, чтобы ошибки отобразились
@@ -131,12 +125,11 @@ class ContractCreateView(SuccessMessageMixin, CreateView):
         return self.render_to_response(context)
 
 
-class ContractUpdateView(SuccessMessageMixin, UpdateView):
+class ContractUpdateView(UpdateView):
     model = Contract
     form_class = ContractForm
     template_name = 'contracts/contract_form.html'
     success_url = reverse_lazy('contracts:contract_list')
-    success_message = "Договор успешно обновлён!"
 
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -147,29 +140,27 @@ class ContractUpdateView(SuccessMessageMixin, UpdateView):
         return data
 
     def form_valid(self, form):
-        context = self.get_context_data()
-        ak_formset = context['ak_formset']
-        self.object = form.save()
+        response = super().form_valid(form)
+        ak_formset = self.get_context_data()['ak_formset']
         ak_formset.instance = self.object
         if ak_formset.is_valid():
             ak_formset.save()
-        else:
-            return self.form_invalid(form)
-        return super().form_valid(form)
+
+        messages.success(self.request, "Договор успешно обновлён!")
+        return response
 
     def form_invalid(self, form):
         context = self.get_context_data()
         context['ak_formset'] = AKFormSet(self.request.POST, self.request.FILES, instance=self.object)
         return self.render_to_response(context)
 
-class ContractDeleteView(SuccessMessageMixin, DeleteView):
+class ContractDeleteView(DeleteView):
     model = Contract
     success_url = reverse_lazy('contracts:contract_list')
-    success_message = "Договор успешно удалён."
 
-    def form_valid(self, form):
-        messages.success(self.request, self.success_message)
-        return super().form_valid(form)
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Договор успешно удалён.")
+        return super().delete(request, *args, **kwargs)
 
 
 @require_POST
