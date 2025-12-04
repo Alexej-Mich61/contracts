@@ -30,26 +30,38 @@
                 </div>
             </div>
 
-            <!-- СЧЁТЧИКИ — минимализм, одна строка, по центру -->
-            <div class="text-center mb-4 py-3 bg-light border-bottom">
-                <span class="text-muted small me-3">Договоров:</span>
-                <strong class="fs-3 text-primary">{{ total_contracts|intcomma }}</strong>
+            <!-- ВЕРХНЯЯ ПАНЕЛЬ: КНОПКИ + СЧЁТЧИКИ — ВСЁ В ОДНОЙ СТРОКЕ -->
+            <div class="border-bottom bg-light py-3 mb-4">
+                <div class="container-fluid">
+                    <div class="row align-items-center">
 
-                <span class="text-muted mx-5">•</span>
+                        <!-- Левая часть: кнопка "Новый договор" -->
+                        <div class="col-auto">
+                            <a href="{% url 'contracts:contract_add' %}" class="btn btn-success btn-lg">
+                                + Новый договор
+                            </a>
+                        </div>
 
-                <span class="text-muted small me-3">АК всего:</span>
-                <strong class="fs-3 text-info">{{ total_aks|intcomma }}</strong>
-            </div>
+                        <!-- Центральная часть: счётчики -->
+                        <div class="col text-center">
+                            <span class="text-muted small me-3">Договоров:</span>
+                            <strong class="fs-3 text-primary">{{ total_contracts|intcomma }}</strong>
 
-            <!-- Кнопка добавления -->
-            <div class="text-center mb-4">
-                <a href="{% url 'contracts:contract_add' %}" class="btn btn-success btn-lg me-3">
-                    + Новый договор
-                </a>
-                <a href="{% url 'contracts:export_excel' %}?{{ request.GET.urlencode }}"
-                   class="btn btn-outline-primary btn-lg">
-                    <i class="fas fa-file-excel me-2"></i>Скачать Excel
-                </a>
+                            <span class="text-muted mx-5">•</span>
+
+                            <span class="text-muted small me-3">АК всего:</span>
+                            <strong class="fs-3 text-info">{{ total_aks|intcomma }}</strong>
+                        </div>
+
+                        <!-- Правая часть: кнопка "Экспорт в Excel" -->
+                        <div class="col-auto">
+                            <a href="{% url 'contracts:export_excel' %}?{{ request.GET.urlencode }}"
+                               class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-file-excel me-2"></i>Скачать Excel
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Список договоров -->
@@ -62,7 +74,7 @@
                         <div class="col-lg-4 col-xl-3">
                             <h5 class="mb-1">
                                 <a href="{% url 'contracts:contract_detail' contract.pk %}"
-                                   class="text-decoration-none text-dark fw-bold">
+                                   class="text-decoration-none fw-bold customer-link">
                                     {{ contract.customer_name }}
                                 </a>
                             </h5>

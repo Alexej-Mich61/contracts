@@ -200,3 +200,49 @@
 .dark-mode .shadow-sm {
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5) !important;
 }
+
+/* === ТЁМНАЯ ТЕМА — ДОПОЛНЕНИЕ === */
+
+/* Делаем название заказчика и ссылки читаемыми на тёмном фоне */
+.dark-mode .contract-card h5 a,
+.dark-mode .contract-card h5,
+.dark-mode .text-dark {
+    color: #58a6ff !important;  /* красивый голубой, как в GitHub */
+}
+
+.dark-mode .contract-card h5 a:hover {
+    color: #79c0ff !important;
+    text-decoration: underline !important;
+}
+
+/* Если где-то ещё используется text-dark — тоже исправляем */
+.dark-mode .text-muted {
+    color: #8b949e !important; /* серый, как в GitHub */
+}
+
+.dark-mode .bg-light {
+    background-color: #161b22 !important; /* тёмная плашка для счётчиков */
+    border-color: #30363d !important;
+}
+
+.dark-mode .border-bottom {
+    border-color: #30363d !important;
+}
+
+/* Карточки договоров — чуть светлее фон, чтобы не сливалось */
+.dark-mode .contract-card {
+    background-color: #0d1117 !important;
+    border: 1px solid #30363d !important;
+}
+
+/* Название заказчика — всегда читаемо в тёмной теме */
+.dark-mode .customer-link,
+.dark-mode .customer-link:hover {
+    color: #58a6ff !important;
+    text-decoration: none !important;
+}
+
+.dark-mode .customer-link:hover {
+    color: #79c0ff !important;
+    text-decoration: underline !important;
+}
