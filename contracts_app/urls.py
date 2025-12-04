@@ -11,4 +11,6 @@ urlpatterns = [
     path('contract/<int:pk>/edit/', views.ContractUpdateView.as_view(), name='contract_edit'),
     path('contract/<int:pk>/update-checklist/', views.update_checklist, name='update_checklist'),
     path('contract/<int:pk>/delete/', views.ContractDeleteView.as_view(), name='contract_delete'),
+    path('', views.contract_list, name='contract_list'),
+    path('export-excel/', views.export_contracts_excel, name='export_excel'),
 ]

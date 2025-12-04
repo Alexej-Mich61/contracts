@@ -42,10 +42,15 @@
             </div>
 
             <!-- Кнопка добавления -->
-            <div class="mb-4">
-                <a href="{% url 'contracts:contract_add' %}" class="btn btn-success">+ Новый договор</a>
+            <div class="text-center mb-4">
+                <a href="{% url 'contracts:contract_add' %}" class="btn btn-success btn-lg me-3">
+                    + Новый договор
+                </a>
+                <a href="{% url 'contracts:export_excel' %}?{{ request.GET.urlencode }}"
+                   class="btn btn-outline-primary btn-lg">
+                    <i class="fas fa-file-excel me-2"></i>Скачать Excel
+                </a>
             </div>
-
 
             <!-- Список договоров -->
             {% if page_obj %}
