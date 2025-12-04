@@ -2,9 +2,8 @@
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib import messages
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Sum
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
@@ -71,17 +70,26 @@ def contract_list(request):
         # Убираем дубли из-за join
         contracts = contracts.distinct()
 
-    # ПАГИНАЦИЯ — 10 записей на страницу
+    # Счетчики
+    total_contracts = contracts.count()
+    total_aks = contracts.aggregate(total=Sum('ak_count'))['total'] or 0
+
+
+       # Пагинация
     paginator = Paginator(contracts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
     context = {
-        'page_obj': page_obj,  # ← теперь передаём page_obj, а не contracts
-        'contracts': page_obj,  # ← оставляем для совместимости с шаблоном
+        'page_obj': page_obj,
+        'contracts': page_obj,
         'implementators': implementators,
         'all_works': all_works,
-        'is_paginated': page_obj.has_other_pages(),  # для красоты
+        'is_paginated': page_obj.has_other_pages(),
+
+        # Два счетчика
+        'total_contracts': total_contracts,
+        'total_aks': total_aks,
     }
     return render(request, 'contracts/contract_list.html', context)
 

@@ -3,7 +3,7 @@
 {% load url_tags %}
 {% load static humanize file_utils %}
 
-{% block title %}Долгосрочные договоры{% endblock %}
+{% block title %}Техническое обслуживание{% endblock %}
 
 {% block content %}
 
@@ -30,10 +30,22 @@
                 </div>
             </div>
 
+            <!-- СЧЁТЧИКИ — минимализм, одна строка, по центру -->
+            <div class="text-center mb-4 py-3 bg-light border-bottom">
+                <span class="text-muted small me-3">Договоров:</span>
+                <strong class="fs-3 text-primary">{{ total_contracts|intcomma }}</strong>
+
+                <span class="text-muted mx-5">•</span>
+
+                <span class="text-muted small me-3">АК всего:</span>
+                <strong class="fs-3 text-info">{{ total_aks|intcomma }}</strong>
+            </div>
+
             <!-- Кнопка добавления -->
             <div class="mb-4">
                 <a href="{% url 'contracts:contract_add' %}" class="btn btn-success">+ Новый договор</a>
             </div>
+
 
             <!-- Список договоров -->
             {% if page_obj %}

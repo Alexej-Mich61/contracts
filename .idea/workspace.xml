@@ -4,11 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="24. Фильтры редакт">
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="25. Всплывающие сообщения-тосты">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contracts_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/js/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/main.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/contracts/contract_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contracts/contract_list.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -284,7 +283,15 @@
       <option name="project" value="LOCAL" />
       <updated>1764761137563</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="25. Всплывающие сообщения-тосты">
+      <option name="closed" value="true" />
+      <created>1764836924268</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1764836924268</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -312,6 +319,7 @@
     <MESSAGE value="21. Добавил статус Ожидание" />
     <MESSAGE value="22. Фильтры" />
     <MESSAGE value="24. Фильтры редакт" />
-    <option name="LAST_COMMIT_MESSAGE" value="24. Фильтры редакт" />
+    <MESSAGE value="25. Всплывающие сообщения-тосты" />
+    <option name="LAST_COMMIT_MESSAGE" value="25. Всплывающие сообщения-тосты" />
   </component>
 </project>
