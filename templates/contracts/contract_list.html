@@ -196,15 +196,16 @@
                 {% if is_paginated %}
                 <nav aria-label="Пагинация" class="mt-5">
                     <ul class="pagination justify-content-center">
-
+                        <!-- ← Назад -->
                         {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page_obj.previous_page_number %}">← Назад</a>
+                                <a class="page-link" href="?{% url_replace page=page_obj.previous_page_number order=current_ordering %}">← Назад</a>
                             </li>
                         {% else %}
                             <li class="page-item disabled"><span class="page-link">← Назад</span></li>
                         {% endif %}
 
+                        <!-- Номера страниц -->
                         {% for num in page_obj.paginator.page_range %}
                             {% if page_obj.number == num %}
                                 <li class="page-item active" aria-current="page">
@@ -223,9 +224,10 @@
                             {% endif %}
                         {% endfor %}
 
+                        <!-- Вперёд → -->
                         {% if page_obj.has_next %}
                             <li class="page-item">
-                                <a class="page-link" href="?{% url_replace page=page_obj.previous_page_number order=current_ordering %">Вперёд →</a>
+                                <a class="page-link" href="?{% url_replace page=page_obj.next_page_number order=current_ordering %}">Вперёд →</a>
                             </li>
                         {% else %}
                             <li class="page-item disabled"><span class="page-link">Вперёд →</span></li>

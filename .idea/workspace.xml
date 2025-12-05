@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="28. Коррекция темной темы">
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="29. Сортировка">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts_app/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/views.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/contracts/contract_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contracts/contract_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/contracts/includes/contract_filter_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contracts/includes/contract_filter_form.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,11 +314,18 @@
       <option name="project" value="LOCAL" />
       <updated>1764883788719</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="29. Сортировка">
+      <option name="closed" value="true" />
+      <created>1764927066101</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1764927066101</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="4. модели договоров, регионов, работ" />
     <MESSAGE value="4. модели контракт, АК" />
     <MESSAGE value="5. шаблоны: список договоров, форма редактирования" />
     <MESSAGE value="6. чек лист, АК, редактирование" />
@@ -345,6 +350,7 @@
     <MESSAGE value="26. Счётчики" />
     <MESSAGE value="27. Экспорт в Эксель" />
     <MESSAGE value="28. Коррекция темной темы" />
-    <option name="LAST_COMMIT_MESSAGE" value="28. Коррекция темной темы" />
+    <MESSAGE value="29. Сортировка" />
+    <option name="LAST_COMMIT_MESSAGE" value="29. Сортировка" />
   </component>
 </project>
