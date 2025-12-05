@@ -25,7 +25,6 @@ def contract_list(request):
     contracts = Contract.objects.select_related('implementator') \
         .prefetch_related('aks', 'works') \
         .annotate(ak_count=Count('aks')) \
-        .order_by('-id')
 
     implementators = Implementator.objects.all().order_by('name')
     all_works = Work.objects.all().order_by('name')
@@ -76,12 +75,24 @@ def contract_list(request):
         # Убираем дубли из-за join
         contracts = contracts.distinct()
 
+    # ←←← НОВАЯ СОРТИРОВКА ←←←
+    ordering = request.GET.get('order', '-created_at')  # по умолчанию: новые сверху
+
+    if ordering == 'created_at':
+        contracts = contracts.order_by('created_at')  # от старых к новым
+    elif ordering == 'customer_name':
+        contracts = contracts.order_by('customer_name')  # по алфавиту А → Я
+    elif ordering == '-customer_name':
+        contracts = contracts.order_by('-customer_name')  # по алфавиту Я → А
+    else:
+        contracts = contracts.order_by('-created_at')  # новые → старые (по умолчанию)
+
     # Счетчики
     total_contracts = contracts.count()
     total_aks = contracts.aggregate(total=Sum('ak_count'))['total'] or 0
 
 
-       # Пагинация
+    # Пагинация
     paginator = Paginator(contracts, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -96,6 +107,8 @@ def contract_list(request):
         # Два счетчика
         'total_contracts': total_contracts,
         'total_aks': total_aks,
+
+        'current_ordering': ordering,  # ← передаём текущую сортировку
     }
     return render(request, 'contracts/contract_list.html', context)
 

@@ -99,6 +99,25 @@
                     </div>
                 </div>
 
+                <!-- Сортировка -->
+                <div class="col-lg-3 col-md-6">
+                    <label class="form-label small fw-bold">Сортировка</label>
+                    <select name="order" class="form-select" onchange="this.form.submit()">
+                        <option value="-created_at" {% if not request.GET.order or request.GET.order == '-created_at' %}selected{% endif %}>
+                        Сначала новые
+                        </option>
+                        <option value="created_at" {% if request.GET.order == 'created_at' %}selected{% endif %}>
+                        Сначала старые
+                        </option>
+                        <option value="customer_name" {% if request.GET.order == 'customer_name' %}selected{% endif %}>
+                        По названию (А → Я)
+                        </option>
+                        <option value="-customer_name" {% if request.GET.order == '-customer_name' %}selected{% endif %}>
+                        По названию (Я → А)
+                        </option>
+                    </select>
+                </div>
+
                 <!-- Кнопки -->
                 <div class="col-12 mt-3">
                     <button type="submit" class="btn btn-primary me-2">
