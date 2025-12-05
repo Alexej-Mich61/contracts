@@ -19,7 +19,6 @@ from datetime import datetime
 
 
 
-
 def contract_list(request):
     # Базовый запрос
     contracts = Contract.objects.select_related('implementator') \

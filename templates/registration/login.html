@@ -1,0 +1,41 @@
+<!-- templates/registration/login.html -->
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Вход — Техническое обслуживание{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white text-center py-4">
+                    <h4 class="mb-0">Техническое обслуживание</h4>
+                    <small class="opacity-75">Вход в систему</small>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Логин</label>
+                            <input type="text" name="username" class="form-control" required autofocus>
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Пароль</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                            Войти
+                        </button>
+                    </form>
+                    {% if form.errors %}
+                        <div class="alert alert-danger mt-3 mb-0">
+                            Неверный логин или пароль
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

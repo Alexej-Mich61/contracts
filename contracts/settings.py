@@ -90,6 +90,10 @@ USE_I18N = True
 USE_TZ = True
 
 
+LOGIN_URL = '/login/'           # ← куда редиректить неавторизованных
+LOGIN_REDIRECT_URL = '/'        # ← куда после логина
+LOGOUT_REDIRECT_URL = '/login/' # ← куда после выхода
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 
