@@ -1,6 +1,7 @@
 <!-- templates/contracts/contract_detail.html -->
 {% extends "base.html" %}
 {% load static humanize file_utils %}
+{% load user_tags %}
 
 {% block title %}Договор #{{ contract.pk }} — {{ contract.customer_name }}{% endblock %}
 
@@ -105,11 +106,13 @@
             {% endif %}
         </div>
 
+        {% if user.is_superuser or user|in_group:"Administrators" %}
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">Действия</div>
                 <div class="card-body">
-                    <a href="{% url 'contracts:contract_edit' contract.pk %}" class="btn btn-outline-primary w-100 mb-2">Редактировать</a>
+                    <a href="{% url 'contracts:contract_edit' contract.pk %}"
+                       class="btn btn-outline-primary w-100 mb-2">Редактировать</a>
                     <form method="post" action="{% url 'contracts:contract_delete' contract.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-danger w-100"
@@ -120,6 +123,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -16,7 +16,12 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 from datetime import datetime
+from .permissions import ViewOnlyPermissionMixin
 
+
+
+def permission_denied_view(request, exception=None):
+    return render(request, '403.html', status=403)
 
 
 def contract_list(request):
@@ -212,7 +217,7 @@ class ContractDetailView(DetailView):
     template_name = 'contracts/contract_detail.html'
     context_object_name = 'contract'
 
-class ContractCreateView(CreateView):
+class ContractCreateView(ViewOnlyPermissionMixin, CreateView):
     model = Contract
     form_class = ContractForm
     template_name = 'contracts/contract_form.html'
@@ -245,7 +250,7 @@ class ContractCreateView(CreateView):
         return self.render_to_response(context)
 
 
-class ContractUpdateView(UpdateView):
+class ContractUpdateView(ViewOnlyPermissionMixin, UpdateView):
     model = Contract
     form_class = ContractForm
     template_name = 'contracts/contract_form.html'
@@ -274,7 +279,7 @@ class ContractUpdateView(UpdateView):
         context['ak_formset'] = AKFormSet(self.request.POST, self.request.FILES, instance=self.object)
         return self.render_to_response(context)
 
-class ContractDeleteView(DeleteView):
+class ContractDeleteView(ViewOnlyPermissionMixin, DeleteView):
     model = Contract
     success_url = reverse_lazy('contracts:contract_list')
 

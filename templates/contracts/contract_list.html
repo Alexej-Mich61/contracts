@@ -2,6 +2,7 @@
 {% extends "base.html" %}
 {% load url_tags %}
 {% load static humanize file_utils %}
+{% load user_tags %}
 
 {% block title %}Техническое обслуживание{% endblock %}
 
@@ -37,9 +38,11 @@
 
                         <!-- Левая часть: кнопка "Новый договор" -->
                         <div class="col-auto">
+                            {% if user.is_superuser or user|in_group:"Administrators" %}
                             <a href="{% url 'contracts:contract_add' %}" class="btn btn-success btn-lg">
                                 + Новый договор
                             </a>
+                            {% endif %}
                         </div>
 
                         <!-- Центральная часть: счётчики -->
@@ -103,6 +106,8 @@
 
                         <!-- Чек-лист -->
                         <div class="col-auto pe-4">
+                            {% if user.is_superuser or user|in_group:"Administrators" %}
+                            <!-- Админы могут менять -->
                             <form method="post" action="{% url 'contracts:update_checklist' contract.pk %}"
                                   class="checklist-form" data-contract-id="{{ contract.pk }}">
                                 {% csrf_token %}
@@ -125,6 +130,29 @@
                                     <label class="form-check-label small fw-bold text-primary">Сполох</label>
                                 </div>
                             </form>
+                            {% else %}
+                            <!-- Viewers — только смотрят, без возможности кликать -->
+                            <div class="small">
+                                <div class="mb-2">
+                                    <span class="text-primary fw-bold">Госуслуги:</span>
+                                    <span class="ms-2 {% if contract.gos_services %}text-success{% else %}text-muted{% endif %}">
+                                        {% if contract.gos_services %}✓ Да{% else %}✗ Нет{% endif %}
+                                    </span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-primary fw-bold">ОКО:</span>
+                                    <span class="ms-2 {% if contract.oko %}text-success{% else %}text-muted{% endif %}">
+                                        {% if contract.oko %}✓ Да{% else %}✗ Нет{% endif %}
+                                    </span>
+                                </div>
+                                <div class="mb-2">
+                                    <span class="text-primary fw-bold">Сполох:</span>
+                                    <span class="ms-2 {% if contract.spolokh %}text-success{% else %}text-muted{% endif %}">
+                                        {% if contract.spolokh %}✓ Да{% else %}✗ Нет{% endif %}
+                                    </span>
+                                </div>
+                            </div>
+                            {% endif %}
                         </div>
 
                         <!-- АК -->
