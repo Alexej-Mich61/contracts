@@ -1,8 +1,19 @@
 # contracts_app/models.py
-from django.db import models
-from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator, FileExtensionValidator
-from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.core.validators import (
+    FileExtensionValidator,
+    MaxValueValidator,
+    MinValueValidator,
+    RegexValidator,
+)
+from django.db import models
+from django.utils import timezone
+
+
+def contract_file_upload_to(instance, filename):
+    """Загружает файлы в папку по году: contracts/files/2026/ и т.д."""
+    year = timezone.now().year
+    return f"contracts/files/{year}/{filename}"
 
 
 # === СПРАВОЧНИКИ ===
@@ -12,7 +23,7 @@ class Work(models.Model):
     class Meta:
         verbose_name = "Работа"
         verbose_name_plural = "Работы"
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -20,12 +31,14 @@ class Work(models.Model):
 
 class Region(models.Model):
     name = models.CharField(max_length=150, unique=True, verbose_name="Название региона")
-    code = models.CharField(max_length=10, blank=True, null=True, unique=True, verbose_name="Код региона")
+    code = models.CharField(
+        max_length=10, blank=True, null=True, unique=True, verbose_name="Код региона"
+    )
 
     class Meta:
         verbose_name = "Регион"
         verbose_name_plural = "Регионы"
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -33,14 +46,16 @@ class Region(models.Model):
 
 class District(models.Model):
     name = models.CharField(max_length=150, verbose_name="Название района")
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='districts', verbose_name="Регион")
+    region = models.ForeignKey(
+        Region, on_delete=models.CASCADE, related_name="districts", verbose_name="Регион"
+    )
     population = models.PositiveIntegerField(blank=True, null=True, verbose_name="Население")
 
     class Meta:
         verbose_name = "Район"
         verbose_name_plural = "Районы"
-        unique_together = ('name', 'region')
-        ordering = ['region__name', 'name']
+        unique_together = ("name", "region")
+        ordering = ["region__name", "name"]
 
     def __str__(self):
         return f"{self.name} ({self.region})"
@@ -52,14 +67,14 @@ class Implementator(models.Model):
         max_length=12,
         unique=True,
         verbose_name="ИНН",
-        validators=[RegexValidator(regex=r'^\d{10}$|^\d{12}$', message="ИНН: 10 или 12 цифр.")],
-        help_text="10 цифр — юр.лицо, 12 — физ.лицо"
+        validators=[RegexValidator(regex=r"^\d{10}$|^\d{12}$", message="ИНН: 10 или 12 цифр.")],
+        help_text="10 цифр — юр.лицо, 12 — физ.лицо",
     )
 
     class Meta:
         verbose_name = "Исполнитель"
         verbose_name_plural = "Исполнители"
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return f"{self.name} (ИНН: {self.inn})"
@@ -70,25 +85,27 @@ def validate_file_size(value):
     if value.size > 20 * 1024 * 1024:  # 20 МБ
         raise ValidationError("Файл не должен превышать 20 МБ.")
 
+
 # === ДОГОВОР ===
 class Contract(models.Model):
     STATUS_CHOICES = (
-        ('pending', 'Ожидание'),  # ← НОВЫЙ СТАТУС
-        ('active', 'Действует'),
-        ('completed', 'Завершён'),
+        ("pending", "Ожидание"),  # ← НОВЫЙ СТАТУС
+        ("active", "Действует"),
+        ("completed", "Завершён"),
     )
 
     customer_name = models.CharField(max_length=300, verbose_name="Заказчик")
     customer_inn = models.CharField(
         max_length=12,
         verbose_name="ИНН Заказчика",
-        validators=[RegexValidator(regex=r'^\d{10}$|^\d{12}$', message="ИНН: 10 или 12 цифр.")],
-        help_text="10 цифр — юр.лицо, 12 — физ.лицо"
+        validators=[RegexValidator(regex=r"^\d{10}$|^\d{12}$", message="ИНН: 10 или 12 цифр.")],
+        help_text="10 цифр — юр.лицо, 12 — физ.лицо",
     )
     start_date = models.DateField(verbose_name="Дата начала")
     end_date = models.DateField(verbose_name="Дата окончания")
-    implementator = models.ForeignKey(Implementator, on_delete=models.PROTECT, verbose_name="Исполнитель")
-
+    implementator = models.ForeignKey(
+        Implementator, on_delete=models.PROTECT, verbose_name="Исполнитель"
+    )
 
     # Чек-лист
     gos_services = models.BooleanField(default=False, verbose_name="Госуслуги")
@@ -101,7 +118,7 @@ class Contract(models.Model):
         blank=True,
         null=True,
         verbose_name="Примечание",
-        help_text="Дополнительная информация (не обязательно)"
+        help_text="Дополнительная информация (не обязательно)",
     )
 
     # Работы
@@ -109,7 +126,7 @@ class Contract(models.Model):
         Work,
         verbose_name="Работы",
         related_name="contracts",
-        help_text="Обязательно для заполнения"
+        help_text="Обязательно для заполнения",
     )
 
     # СУММА ВСЕГО
@@ -119,7 +136,7 @@ class Contract(models.Model):
         blank=True,
         null=True,
         verbose_name="Сумма общая",
-        help_text="Например: 1 250 000.00"
+        help_text="Например: 55 200.00",
     )
 
     # СУММА В МЕСЯЦ
@@ -129,30 +146,43 @@ class Contract(models.Model):
         blank=True,
         null=True,
         verbose_name="Сумма в месяц",
-        help_text="Например: 104 166.67"
+        help_text="Например: 4 600.00",
     )
 
     # Файлы (1–3) — остаются необязательными
+
     file1 = models.FileField(
-        upload_to='contracts/files/',
+        upload_to=contract_file_upload_to,
         blank=True,
         null=True,
         validators=[
-            FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx', 'jpg', 'png', 'jpeg']),
-            validate_file_size
+            FileExtensionValidator(allowed_extensions=["pdf", "doc", "docx", "jpg", "png", "jpeg"]),
+            validate_file_size,
         ],
-        verbose_name="Файл 1"
+        verbose_name="Файл 1",
     )
-    file2 = models.FileField(upload_to='contracts/files/', blank=True, null=True, validators=[validate_file_size], verbose_name="Файл 2")
-    file3 = models.FileField(upload_to='contracts/files/', blank=True, null=True, validators=[validate_file_size], verbose_name="Файл 3")
+    file2 = models.FileField(
+        upload_to=contract_file_upload_to,
+        blank=True,
+        null=True,
+        validators=[validate_file_size],
+        verbose_name="Файл 2",
+    )
+    file3 = models.FileField(
+        upload_to=contract_file_upload_to,
+        blank=True,
+        null=True,
+        validators=[validate_file_size],
+        verbose_name="Файл 3",
+    )
 
     # СТАТУС АВТОМАТИЧЕСКИЙ
     status = models.CharField(
         max_length=20,
         choices=STATUS_CHOICES,
-        default='pending',        # ← теперь по умолчанию "Ожидание"
+        default="pending",  # ← теперь по умолчанию "Ожидание"
         editable=False,
-        verbose_name="Статус"
+        verbose_name="Статус",
     )
 
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
@@ -161,7 +191,7 @@ class Contract(models.Model):
     class Meta:
         verbose_name = "Долгосрочный договор"
         verbose_name_plural = "Долгосрочные договоры"
-        ordering = ['-start_date']
+        ordering = ["-start_date"]
 
     def __str__(self):
         return f"Договор с {self.customer_name} ({self.start_date} — {self.end_date})"
@@ -176,28 +206,31 @@ class Contract(models.Model):
         # ← УМНАЯ ЛОГИКА СТАТУСА
         if self.start_date and self.end_date:
             if today < self.start_date:
-                self.status = 'pending'      # ещё не начался
+                self.status = "pending"  # ещё не начался
             elif self.start_date <= today <= self.end_date:
-                self.status = 'active'       # сейчас действует
+                self.status = "active"  # сейчас действует
             else:
-                self.status = 'completed'    # закончился
+                self.status = "completed"  # закончился
         else:
-            self.status = 'pending'  # если даты не указаны
+            self.status = "pending"  # если даты не указаны
 
         super().save(*args, **kwargs)
 
     def file_count(self):
-        return sum(bool(getattr(self, f'file{i}', None)) for i in range(1, 4))
+        return sum(bool(getattr(self, f"file{i}", None)) for i in range(1, 4))
+
     file_count.short_description = "Файлов"
 
 
 # === АБОНЕНТСКИЙ КОМПЛЕКТ (АК) ===
 class AK(models.Model):
-    contract = models.ForeignKey('Contract', on_delete=models.CASCADE, related_name='aks', verbose_name="Договор")
+    contract = models.ForeignKey(
+        "Contract", on_delete=models.CASCADE, related_name="aks", verbose_name="Договор"
+    )
     number = models.PositiveIntegerField(
         validators=[MinValueValidator(1), MaxValueValidator(99999999)],
         verbose_name="Номер АК",
-        help_text="Макс. 8 цифр"
+        help_text="Макс. 8 цифр",
     )
     district = models.ForeignKey(District, on_delete=models.PROTECT, verbose_name="Район")
     address = models.CharField(max_length=500, verbose_name="Адрес")
@@ -205,8 +238,8 @@ class AK(models.Model):
     class Meta:
         verbose_name = "Абонентский комплект (АК)"
         verbose_name_plural = "Абонентские комплекты (АК)"
-        unique_together = ('contract', 'number')
-        ordering = ['number']
+        unique_together = ("contract", "number")
+        ordering = ["number"]
 
     def __str__(self):
         return f"АК {self.number} — {self.address}"

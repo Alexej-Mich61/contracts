@@ -1,23 +1,23 @@
 # contracts/urls.py
-from django.contrib import admin
-from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.urls import include, path
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path("admin/", admin.site.urls),
     # ←←← АВТОРИЗАЦИЯ ←←←
-    path('login/', auth_views.LoginView.as_view(
-        template_name='registration/login.html',
-        next_page='/'
-    ), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(next_page='/login/'), name='logout'),
-
-    path('', include('contracts_app.urls')),
+    path(
+        "login/",
+        auth_views.LoginView.as_view(template_name="registration/login.html", next_page="/"),
+        name="login",
+    ),
+    path("logout/", auth_views.LogoutView.as_view(next_page="/login/"), name="logout"),
+    path("", include("contracts_app.urls")),
 ]
 
-handler403 = 'contracts_app.views.permission_denied_view'
+handler403 = "contracts_app.views.permission_denied_view"
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])

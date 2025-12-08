@@ -12,12 +12,12 @@ class ViewOnlyPermissionMixin(UserPassesTestMixin):
         user = self.request.user
 
         # Администраторы могут всё
-        if user.is_superuser or user.groups.filter(name='Administrators').exists():
+        if user.is_superuser or user.groups.filter(name="Administrators").exists():
             return True
 
         # Viewers могут только смотреть (но не редактировать/удалять)
-        if self.request.method in ['GET', 'HEAD', 'OPTIONS']:
-            return user.has_perm('contracts_app.view_contract')
+        if self.request.method in ["GET", "HEAD", "OPTIONS"]:
+            return user.has_perm("contracts_app.view_contract")
 
         # Для POST/PUT/DELETE — только админы
         return False
