@@ -19,6 +19,6 @@ urlpatterns = [
 
 handler403 = "contracts_app.views.permission_denied_view"
 
-if settings.DEBUG:
+if settings.DEBUG or True:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,1 +1,8 @@
-# requirements.in
+# requirements.in — ПРОДАКШЕН (обязательные зависимости)
+Django>=5.1
+python-decouple
+openpyxl
+crispy-bootstrap5
+django-crispy-forms
+django-humanize
+argon2-cffi          # ← ОБЯЗАТЕЛЬНО для Linux! Без него пароли не будут работать

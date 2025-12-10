@@ -95,11 +95,15 @@ LOGIN_URL = "/login/"  # ← куда редиректить неавториз�
 LOGIN_REDIRECT_URL = "/"  # ← куда после логина
 LOGOUT_REDIRECT_URL = "/login/"  # ← куда после выхода
 
+# === СТАТИКА ===
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# === МЕДИА (файлы пользователей) ===
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+os.makedirs(MEDIA_ROOT, exist_ok=True)
 
 # Для файлов
 FILE_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024  # 20 МБ

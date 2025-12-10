@@ -1,1 +1,12 @@
-# requirements-dev.in
+# requirements-dev.in — для локальной разработки
+-r requirements.in
+
+# Форматирование и качество кода
+black
+isort
+
+# Управление зависимостями (pip-compile-multi и др)
+pip-tools
+pip-compile-multi
+build
+wheel

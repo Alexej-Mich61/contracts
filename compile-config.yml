@@ -1,14 +1,9 @@
 # compile-config.yml
-base: requirements.in
-dev: requirements-dev.in
-options:
-  generate-hashes: true
-  upgrade: false
+files:
+  - source: requirements.in
+    target: requirements.txt
+    hashes: true
 
-dev_extras:
-  - black
-  - isort
-  - django-debug-toolbar
-  - pytest
-  - pytest-django
-  - pre-commit
+  - source: requirements-dev.in
+    target: requirements-dev.txt
+    hashes: true
