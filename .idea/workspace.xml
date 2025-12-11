@@ -4,17 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="35. pip-compile-multi, argon2-cffi">
-      <change beforePath="$PROJECT_DIR$/.env.example" beforeDir="false" afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="3. fin">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compile-config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/compile-config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.in" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.in" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.in" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements_all.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -392,14 +383,21 @@
       <option name="project" value="LOCAL" />
       <updated>1765289762035</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="3. fin">
+      <option name="closed" value="true" />
+      <created>1765389796288</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1765389796289</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.in" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="&#10;11. Уведомления (toasts) вместо alert" />
     <MESSAGE value="&#10;12. Добавил сумму, ширина шаблонов" />
     <MESSAGE value="&#10;13. Стили, правки" />
     <MESSAGE value="&#10;14. Стили, правки" />
@@ -424,6 +422,7 @@
     <MESSAGE value="33. isort+black" />
     <MESSAGE value="34. isort+black" />
     <MESSAGE value="35. pip-compile-multi, argon2-cffi" />
-    <option name="LAST_COMMIT_MESSAGE" value="35. pip-compile-multi, argon2-cffi" />
+    <MESSAGE value="3. fin" />
+    <option name="LAST_COMMIT_MESSAGE" value="3. fin" />
   </component>
 </project>
