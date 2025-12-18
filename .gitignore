@@ -166,4 +166,8 @@ __marimo__/
 /media/**
 !/media/.gitkeep    # ← можно оставить пустой файл, чтобы папка была в репозитории
 
+# Статика
+staticfiles/
+*/staticfiles/
+
 
