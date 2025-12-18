@@ -1,4 +1,4 @@
-# templates/templatetags/url_tags.py
+# contracts_app/templatetags/url_tags.py
 from django import template
 
 register = template.Library()

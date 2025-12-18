@@ -111,3 +111,10 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# CSRF и безопасность — теперь из .env
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
+
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=False, cast=bool)
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=False, cast=bool)
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=False, cast=bool)
