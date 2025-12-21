@@ -6,18 +6,29 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0005_alter_implementator_inn_alter_region_code_contract_and_more'),
+        ("contracts_app", "0005_alter_implementator_inn_alter_region_code_contract_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='contract',
-            name='note',
-            field=models.CharField(blank=True, help_text='Дополнительная информация (не обязательно)', max_length=500, null=True, verbose_name='Примечание'),
+            model_name="contract",
+            name="note",
+            field=models.CharField(
+                blank=True,
+                help_text="Дополнительная информация (не обязательно)",
+                max_length=500,
+                null=True,
+                verbose_name="Примечание",
+            ),
         ),
         migrations.AddField(
-            model_name='contract',
-            name='works',
-            field=models.ManyToManyField(help_text='Обязательно для заполнения', related_name='contracts', to='contracts_app.work', verbose_name='Работы'),
+            model_name="contract",
+            name="works",
+            field=models.ManyToManyField(
+                help_text="Обязательно для заполнения",
+                related_name="contracts",
+                to="contracts_app.work",
+                verbose_name="Работы",
+            ),
         ),
     ]

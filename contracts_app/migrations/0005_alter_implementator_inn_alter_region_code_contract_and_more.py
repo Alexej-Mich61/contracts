@@ -9,59 +9,165 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0004_alter_work_options_alter_work_unique_together_and_more'),
+        ("contracts_app", "0004_alter_work_options_alter_work_unique_together_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='implementator',
-            name='inn',
-            field=models.CharField(help_text='10 цифр — юр.лицо, 12 — физ.лицо', max_length=12, unique=True, validators=[django.core.validators.RegexValidator(message='ИНН: 10 или 12 цифр.', regex='^\\d{10}$|^\\d{12}$')], verbose_name='ИНН'),
+            model_name="implementator",
+            name="inn",
+            field=models.CharField(
+                help_text="10 цифр — юр.лицо, 12 — физ.лицо",
+                max_length=12,
+                unique=True,
+                validators=[
+                    django.core.validators.RegexValidator(
+                        message="ИНН: 10 или 12 цифр.", regex="^\\d{10}$|^\\d{12}$"
+                    )
+                ],
+                verbose_name="ИНН",
+            ),
         ),
         migrations.AlterField(
-            model_name='region',
-            name='code',
-            field=models.CharField(blank=True, max_length=10, null=True, unique=True, verbose_name='Код региона'),
+            model_name="region",
+            name="code",
+            field=models.CharField(
+                blank=True, max_length=10, null=True, unique=True, verbose_name="Код региона"
+            ),
         ),
         migrations.CreateModel(
-            name='Contract',
+            name="Contract",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('customer_name', models.CharField(max_length=300, verbose_name='Заказчик')),
-                ('customer_inn', models.CharField(help_text='10 цифр — юр.лицо, 12 — физ.лицо', max_length=12, validators=[django.core.validators.RegexValidator(message='ИНН: 10 или 12 цифр.', regex='^\\d{10}$|^\\d{12}$')], verbose_name='ИНН Заказчика')),
-                ('start_date', models.DateField(verbose_name='Дата начала')),
-                ('end_date', models.DateField(verbose_name='Дата окончания')),
-                ('gos_services', models.BooleanField(default=False, verbose_name='Госуслуги')),
-                ('oko', models.BooleanField(default=False, verbose_name='ОКО')),
-                ('spolokh', models.BooleanField(default=False, verbose_name='Сполох')),
-                ('file1', models.FileField(blank=True, null=True, upload_to='contracts/files/', validators=[django.core.validators.FileExtensionValidator(allowed_extensions=['pdf', 'doc', 'docx', 'jpg', 'png', 'jpeg']), contracts_app.models.validate_file_size], verbose_name='Файл 1')),
-                ('file2', models.FileField(blank=True, null=True, upload_to='contracts/files/', validators=[contracts_app.models.validate_file_size], verbose_name='Файл 2')),
-                ('file3', models.FileField(blank=True, null=True, upload_to='contracts/files/', validators=[contracts_app.models.validate_file_size], verbose_name='Файл 3')),
-                ('status', models.CharField(choices=[('active', 'Действует'), ('completed', 'Завершён')], editable=False, max_length=20, verbose_name='Статус')),
-                ('created_at', models.DateTimeField(auto_now_add=True, verbose_name='Создан')),
-                ('updated_at', models.DateTimeField(auto_now=True, verbose_name='Обновлён')),
-                ('implementator', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='contracts_app.implementator', verbose_name='Исполнитель')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("customer_name", models.CharField(max_length=300, verbose_name="Заказчик")),
+                (
+                    "customer_inn",
+                    models.CharField(
+                        help_text="10 цифр — юр.лицо, 12 — физ.лицо",
+                        max_length=12,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                message="ИНН: 10 или 12 цифр.", regex="^\\d{10}$|^\\d{12}$"
+                            )
+                        ],
+                        verbose_name="ИНН Заказчика",
+                    ),
+                ),
+                ("start_date", models.DateField(verbose_name="Дата начала")),
+                ("end_date", models.DateField(verbose_name="Дата окончания")),
+                ("gos_services", models.BooleanField(default=False, verbose_name="Госуслуги")),
+                ("oko", models.BooleanField(default=False, verbose_name="ОКО")),
+                ("spolokh", models.BooleanField(default=False, verbose_name="Сполох")),
+                (
+                    "file1",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to="contracts/files/",
+                        validators=[
+                            django.core.validators.FileExtensionValidator(
+                                allowed_extensions=["pdf", "doc", "docx", "jpg", "png", "jpeg"]
+                            ),
+                            contracts_app.models.validate_file_size,
+                        ],
+                        verbose_name="Файл 1",
+                    ),
+                ),
+                (
+                    "file2",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to="contracts/files/",
+                        validators=[contracts_app.models.validate_file_size],
+                        verbose_name="Файл 2",
+                    ),
+                ),
+                (
+                    "file3",
+                    models.FileField(
+                        blank=True,
+                        null=True,
+                        upload_to="contracts/files/",
+                        validators=[contracts_app.models.validate_file_size],
+                        verbose_name="Файл 3",
+                    ),
+                ),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[("active", "Действует"), ("completed", "Завершён")],
+                        editable=False,
+                        max_length=20,
+                        verbose_name="Статус",
+                    ),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True, verbose_name="Создан")),
+                ("updated_at", models.DateTimeField(auto_now=True, verbose_name="Обновлён")),
+                (
+                    "implementator",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="contracts_app.implementator",
+                        verbose_name="Исполнитель",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Долгосрочный договор',
-                'verbose_name_plural': 'Долгосрочные договоры',
-                'ordering': ['-start_date'],
+                "verbose_name": "Долгосрочный договор",
+                "verbose_name_plural": "Долгосрочные договоры",
+                "ordering": ["-start_date"],
             },
         ),
         migrations.CreateModel(
-            name='AK',
+            name="AK",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('number', models.PositiveIntegerField(help_text='Макс. 8 цифр', validators=[django.core.validators.MinValueValidator(1), django.core.validators.MaxValueValidator(99999999)], verbose_name='Номер АК')),
-                ('address', models.CharField(max_length=500, verbose_name='Адрес')),
-                ('district', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='contracts_app.district', verbose_name='Район')),
-                ('contract', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='aks', to='contracts_app.contract', verbose_name='Договор')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "number",
+                    models.PositiveIntegerField(
+                        help_text="Макс. 8 цифр",
+                        validators=[
+                            django.core.validators.MinValueValidator(1),
+                            django.core.validators.MaxValueValidator(99999999),
+                        ],
+                        verbose_name="Номер АК",
+                    ),
+                ),
+                ("address", models.CharField(max_length=500, verbose_name="Адрес")),
+                (
+                    "district",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.PROTECT,
+                        to="contracts_app.district",
+                        verbose_name="Район",
+                    ),
+                ),
+                (
+                    "contract",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="aks",
+                        to="contracts_app.contract",
+                        verbose_name="Договор",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Абонентский комплект (АК)',
-                'verbose_name_plural': 'Абонентские комплекты (АК)',
-                'ordering': ['number'],
-                'unique_together': {('contract', 'number')},
+                "verbose_name": "Абонентский комплект (АК)",
+                "verbose_name_plural": "Абонентские комплекты (АК)",
+                "ordering": ["number"],
+                "unique_together": {("contract", "number")},
             },
         ),
     ]

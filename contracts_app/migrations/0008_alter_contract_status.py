@@ -6,13 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0007_contract_monthly_amount_contract_total_amount'),
+        ("contracts_app", "0007_contract_monthly_amount_contract_total_amount"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='contract',
-            name='status',
-            field=models.CharField(choices=[('pending', 'Ожидание'), ('active', 'Действует'), ('completed', 'Завершён')], default='pending', editable=False, max_length=20, verbose_name='Статус'),
+            model_name="contract",
+            name="status",
+            field=models.CharField(
+                choices=[
+                    ("pending", "Ожидание"),
+                    ("active", "Действует"),
+                    ("completed", "Завершён"),
+                ],
+                default="pending",
+                editable=False,
+                max_length=20,
+                verbose_name="Статус",
+            ),
         ),
     ]

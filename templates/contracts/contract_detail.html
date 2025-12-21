@@ -35,9 +35,38 @@
                 <div class="card-header"><strong>Чек-лист</strong></div>
                 <div class="card-body">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Госуслуги: {% if contract.gos_services %}Да{% else %}Нет{% endif %}</li>
+                        <li class="list-group-item">
+                            Госуслуги: {% if contract.gos_services %}Да{% else %}Нет{% endif %}
+                        </li>
                         <li class="list-group-item">ОКО: {% if contract.oko %}Да{% else %}Нет{% endif %}</li>
                         <li class="list-group-item">Сполох: {% if contract.spolokh %}Да{% else %}Нет{% endif %}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Стадия подписания -->
+            <div class="card mb-3">
+                <div class="card-header"><strong>Стадия подписания</strong></div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            На подписании: {% if contract.contract_to_be_signed %}Да{% else %}Нет{% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            Подписан: {% if contract.contract_signed %}Да{% else %}Нет{% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            Торги: {% if contract.contract_signed_in_trading_platform %}Да{% else %}Нет{% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            ЭДО: {% if contract.contract_signed_in_EDO %}Да{% else %}Нет{% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            Бумажный оригинал: {% if contract.contract_original_received %}Да{% else %}Нет{% endif %}
+                        </li>
+                        <li class="list-group-item">
+                            Расторжение: {% if contract.contract_termination %}Да{% else %}Нет{% endif %}
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -48,9 +77,23 @@
                 <div class="card-header"><strong>Прикреплённые файлы</strong></div>
                 <div class="card-body">
                     <div class="d-flex gap-3 flex-wrap">
-                        {% if contract.file1 %}<a href="{{ contract.file1.url }}" target="_blank" class="btn btn-sm btn-outline-primary">{{ contract.file1.name|get_extension|upper }}</a>{% endif %}
-                        {% if contract.file2 %}<a href="{{ contract.file2.url }}" target="_blank" class="btn btn-sm btn-outline-success">{{ contract.file2.name|get_extension|upper }}</a>{% endif %}
-                        {% if contract.file3 %}<a href="{{ contract.file3.url }}" target="_blank" class="btn btn-sm btn-outline-warning">{{ contract.file3.name|get_extension|upper }}</a>{% endif %}
+                        {% if contract.file1 %}
+                        <a href="{{ contract.file1.url }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                            {{ contract.file1.name|get_extension|upper }}
+                        </a>
+                        {% endif %}
+
+                        {% if contract.file2 %}
+                        <a href="{{ contract.file2.url }}" target="_blank" class="btn btn-sm btn-outline-success">
+                            {{ contract.file2.name|get_extension|upper }}
+                        </a>
+                        {% endif %}
+
+                        {% if contract.file3 %}
+                        <a href="{{ contract.file3.url }}" target="_blank" class="btn btn-sm btn-outline-warning">
+                            {{ contract.file3.name|get_extension|upper }}
+                        </a>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -61,9 +104,9 @@
                 <div class="card-header"><strong>Работы</strong></div>
                 <div class="card-body">
                     {% for work in contract.works.all %}
-                        <span class="badge bg-primary me-1">{{ work.name }}</span>
+                    <span class="badge bg-primary me-1">{{ work.name }}</span>
                     {% empty %}
-                        <span class="text-muted">Не указаны</span>
+                    <span class="text-muted">Не указаны</span>
                     {% endfor %}
                 </div>
             </div>
@@ -85,20 +128,20 @@
                 <div class="card-body p-0">
                     <table class="table table-sm table-hover mb-0">
                         <thead class="table-light">
-                            <tr>
-                                <th>Номер АК</th>
-                                <th>Район</th>
-                                <th>Адрес</th>
-                            </tr>
+                        <tr>
+                            <th>Номер АК</th>
+                            <th>Район</th>
+                            <th>Адрес</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            {% for ak in contract.aks.all %}
-                            <tr>
-                                <td>{{ ak.number }}</td>
-                                <td>{{ ak.district }}</td>
-                                <td>{{ ak.address }}</td>
-                            </tr>
-                            {% endfor %}
+                        {% for ak in contract.aks.all %}
+                        <tr>
+                            <td>{{ ak.number }}</td>
+                            <td>{{ ak.district }}</td>
+                            <td>{{ ak.address }}</td>
+                        </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -106,13 +149,34 @@
             {% endif %}
         </div>
 
+        <!-- История изменений -->
+        <div class="card mb-3">
+            <div class="card-header"><strong>История изменений</strong></div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    {% for historical in contract.history.all %}
+                    <li class="list-group-item">
+                        {{ historical.history_date|date:"d.m.Y H:i" }} —
+                        {{ historical.history_user.username }} изменил:
+                        {{ historical.history_change_reason|default:"Изменения" }}
+                    </li>
+                    {% empty %}
+                    <li class="list-group-item text-muted">Нет изменений</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Блок действий для админов — теперь правильно внутри row -->
         {% if user.is_superuser or user|in_group:"Administrators" %}
         <div class="col-md-4">
             <div class="card">
                 <div class="card-header">Действия</div>
                 <div class="card-body">
                     <a href="{% url 'contracts:contract_edit' contract.pk %}"
-                       class="btn btn-outline-primary w-100 mb-2">Редактировать</a>
+                       class="btn btn-outline-primary w-100 mb-2">
+                        Редактировать
+                    </a>
                     <form method="post" action="{% url 'contracts:contract_delete' contract.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-danger w-100"
@@ -124,6 +188,6 @@
             </div>
         </div>
         {% endif %}
-    </div>
-</div>
+    </div> <!-- конец row -->
+</div> <!-- конец container -->
 {% endblock %}

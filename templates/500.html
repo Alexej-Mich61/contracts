@@ -1,0 +1,17 @@
+<!-- templates/500.html -->
+{% extends "base.html" %}
+
+{% block title %}Ошибка сервера — 500{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <h1 class="display-1 text-danger fw-bold">500</h1>
+    <h2 class="mb-4">Внутренняя ошибка сервера</h2>
+    <p class="lead text-muted mb-5">
+        Что-то пошло не так. Мы уже работаем над исправлением.
+    </p>
+    <a href="{% url 'contracts:contract_list' %}" class="btn btn-primary btn-lg">
+        На главную
+    </a>
+</div>
+{% endblock %}

@@ -1,4 +1,5 @@
 # contracts_app/models.py
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import (
     FileExtensionValidator,
@@ -8,12 +9,19 @@ from django.core.validators import (
 )
 from django.db import models
 from django.utils import timezone
+from simple_history.models import HistoricalRecords  # ← Для истории
 
 
 def contract_file_upload_to(instance, filename):
     """Загружает файлы в папку по году: contracts/files/2026/ и т.д."""
     year = timezone.now().year
     return f"contracts/files/{year}/{filename}"
+
+
+# === ВАЛИДАТОР ФАЙЛОВ ===
+def validate_file_size(value):
+    if value.size > 20 * 1024 * 1024:  # 20 МБ
+        raise ValidationError("Файл не должен превышать 20 МБ.")
 
 
 # === СПРАВОЧНИКИ ===
@@ -80,12 +88,6 @@ class Implementator(models.Model):
         return f"{self.name} (ИНН: {self.inn})"
 
 
-# === ВАЛИДАТОР ФАЙЛОВ ===
-def validate_file_size(value):
-    if value.size > 20 * 1024 * 1024:  # 20 МБ
-        raise ValidationError("Файл не должен превышать 20 МБ.")
-
-
 # === ДОГОВОР ===
 class Contract(models.Model):
     STATUS_CHOICES = (
@@ -111,6 +113,16 @@ class Contract(models.Model):
     gos_services = models.BooleanField(default=False, verbose_name="Госуслуги")
     oko = models.BooleanField(default=False, verbose_name="ОКО")
     spolokh = models.BooleanField(default=False, verbose_name="Сполох")
+
+    # === ЧЕК-ЛИСТ: СТАДИЯ ПОДПИСАНИЯ ===
+    contract_to_be_signed = models.BooleanField(default=True, verbose_name="На подписании")
+    contract_signed = models.BooleanField(default=False, verbose_name="Подписан")
+    contract_signed_in_trading_platform = models.BooleanField(default=False, verbose_name="Торги")
+    contract_signed_in_EDO = models.BooleanField(default=False, verbose_name="ЭДО")
+    contract_original_received = models.BooleanField(
+        default=False, verbose_name="Бумажный оригинал"
+    )
+    contract_termination = models.BooleanField(default=False, verbose_name="Расторжение")
 
     # Примечание
     note = models.CharField(
@@ -185,8 +197,31 @@ class Contract(models.Model):
         verbose_name="Статус",
     )
 
+    # ФЛАГ ДЛЯ АРХИВА
+    is_active = models.BooleanField(default=True, verbose_name="Актуальный")
+
+    # Учёт создания и обновления
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Создан")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлён")
+    created_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="created_contracts",
+        verbose_name="Создал",
+    )
+    updated_by = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="updated_contracts",
+        verbose_name="Обновил",
+    )
+
+    # История изменений (django-simple-history)
+    history = HistoricalRecords()
 
     class Meta:
         verbose_name = "Долгосрочный договор"
@@ -213,6 +248,36 @@ class Contract(models.Model):
                 self.status = "completed"  # закончился
         else:
             self.status = "pending"  # если даты не указаны
+
+        # ← ЛОГИКА ДЛЯ ЧЕК-ЛИСТА "СТАДИЯ ПОДПИСАНИЯ": только один пункт стадии подписания может быть True
+        signing_fields = [
+            "contract_to_be_signed",
+            "contract_signed",
+            "contract_signed_in_trading_platform",
+            "contract_signed_in_EDO",
+            "contract_original_received",
+            "contract_termination",
+        ]
+
+        true_count = sum(getattr(self, field) for field in signing_fields)
+
+        # Если включено больше одного — оставляем только тот, который пользователь выбрал последним
+        # (или первый True, если несколько)
+        if true_count > 1:
+            # Находим первый True и оставляем только его
+            for field in signing_fields:
+                if getattr(self, field):
+                    setattr(self, field, True)
+                    break
+            # Все остальные — False
+            for field in signing_fields[1:]:
+                setattr(self, field, False)
+
+        # Если ни один не включён — по умолчанию "На подписании"
+        if true_count == 0:
+            self.contract_to_be_signed = True
+            for field in signing_fields[1:]:
+                setattr(self, field, False)
 
         super().save(*args, **kwargs)
 

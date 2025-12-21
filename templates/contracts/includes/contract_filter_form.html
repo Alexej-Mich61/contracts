@@ -79,7 +79,7 @@
 
                 <!-- 8. Чек-лист -->
                 <div class="col-12">
-                    <label class="form-label small fw-bold">Чек-лист (выберите нужный):</label>
+                    <label class="form-label small fw-bold">Чек-лист Базы (выберите нужные):</label>
                     <div class="d-flex gap-4 flex-wrap">
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" name="gos_services" id="gos"
@@ -95,6 +95,43 @@
                             <input class="form-check-input" type="checkbox" name="spolokh" id="spolokh"
                                    {% if request.GET.spolokh %}checked{% endif %}>
                             <label class="form-check-label" for="spolokh">Сполох</label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Стадия подписания -->
+                <div class="col-12 mt-3">
+                    <label class="form-label small fw-bold">Стадии подписания договора (выберите нужные):</label>
+                    <div class="d-flex gap-4 flex-wrap">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="stage_to_be_signed" id="stage_to_be_signed"
+                                   {% if request.GET.stage_to_be_signed %}checked{% endif %}>
+                            <label class="form-check-label" for="stage_to_be_signed">На подписании</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="stage_signed" id="stage_signed"
+                                   {% if request.GET.stage_signed %}checked{% endif %}>
+                            <label class="form-check-label" for="stage_signed">Подписан</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="stage_trading_platform" id="stage_trading_platform"
+                                   {% if request.GET.stage_trading_platform %}checked{% endif %}>
+                            <label class="form-check-label" for="stage_trading_platform">Торги</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="stage_edo" id="stage_edo"
+                                   {% if request.GET.stage_edo %}checked{% endif %}>
+                            <label class="form-check-label" for="stage_edo">ЭДО</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="stage_original_received" id="stage_original_received"
+                                   {% if request.GET.stage_original_received %}checked{% endif %}>
+                            <label class="form-check-label" for="stage_original_received">Бумажный оригинал</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" name="stage_termination" id="stage_termination"
+                                   {% if request.GET.stage_termination %}checked{% endif %}>
+                            <label class="form-check-label" for="stage_termination">Расторжение</label>
                         </div>
                     </div>
                 </div>

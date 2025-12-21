@@ -30,4 +30,9 @@ urlpatterns = [
         name="contract_delete",
     ),
     path("export-excel/", login_required(views.export_contracts_excel), name="export_excel"),
+    path(
+        "contract/<int:pk>/update-signing-stage/",
+        login_required(views.update_signing_stage),
+        name="update_signing_stage",
+    ),
 ]

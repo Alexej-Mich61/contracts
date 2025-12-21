@@ -7,36 +7,69 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0001_initial'),
+        ("contracts_app", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Region',
+            name="Region",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=150, unique=True, verbose_name='Название региона')),
-                ('code', models.CharField(blank=True, max_length=10, null=True, unique=True, verbose_name='Код региона (ISO, почтовый и т.п.)')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(max_length=150, unique=True, verbose_name="Название региона"),
+                ),
+                (
+                    "code",
+                    models.CharField(
+                        blank=True,
+                        max_length=10,
+                        null=True,
+                        unique=True,
+                        verbose_name="Код региона (ISO, почтовый и т.п.)",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Регион',
-                'verbose_name_plural': 'Регионы',
-                'ordering': ['name'],
+                "verbose_name": "Регион",
+                "verbose_name_plural": "Регионы",
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='District',
+            name="District",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=150, verbose_name='Название района')),
-                ('population', models.PositiveIntegerField(blank=True, null=True, verbose_name='Население')),
-                ('region', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='districts', to='contracts_app.region', verbose_name='Регион')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=150, verbose_name="Название района")),
+                (
+                    "population",
+                    models.PositiveIntegerField(blank=True, null=True, verbose_name="Население"),
+                ),
+                (
+                    "region",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="districts",
+                        to="contracts_app.region",
+                        verbose_name="Регион",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Район',
-                'verbose_name_plural': 'Районы',
-                'ordering': ['region__name', 'name'],
-                'unique_together': {('name', 'region')},
+                "verbose_name": "Район",
+                "verbose_name_plural": "Районы",
+                "ordering": ["region__name", "name"],
+                "unique_together": {("name", "region")},
             },
         ),
     ]

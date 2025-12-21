@@ -25,6 +25,13 @@ class ContractForm(forms.ModelForm):
             "file1",
             "file2",
             "file3",
+            # ← НОВЫЕ ПОЛЯ
+            "contract_to_be_signed",
+            "contract_signed",
+            "contract_signed_in_trading_platform",
+            "contract_signed_in_EDO",
+            "contract_original_received",
+            "contract_termination",
         ]
         widgets = {
             "start_date": forms.DateInput(

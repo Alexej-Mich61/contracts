@@ -1,18 +1,24 @@
 # pyproject.toml
 [tool.black]
 line-length = 100
-target-version = ['py39']
-include = '\.pyi?$'
-extend-exclude = '''
+target-version = ["py39"]
+exclude = '''
 /(
-  | migrations
-  | venv
-  | \.venv
-  | \.git
-  | \.mypy_cache
-  | \.pytest_cache
-  | htmlcov
-  | \.tox
+    \\.eggs         |
+    \\.git          |
+    \\.hg           |
+    \\.mypy_cache   |
+    \\.tox          |
+    \\.venv         |
+    venv            |
+    _build          |
+    buck-out        |
+    build           |
+    dist            |
+    migrations      |
+    templates       |
+    htmlcov         |
+    \\.pytest_cache
 )/
 '''
 

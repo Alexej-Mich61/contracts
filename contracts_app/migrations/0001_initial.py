@@ -8,36 +8,67 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='ContractType',
+            name="ContractType",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, unique=True, verbose_name='Название типа договора')),
-                ('description', models.TextField(blank=True, verbose_name='Описание')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                (
+                    "name",
+                    models.CharField(
+                        max_length=200, unique=True, verbose_name="Название типа договора"
+                    ),
+                ),
+                ("description", models.TextField(blank=True, verbose_name="Описание")),
             ],
             options={
-                'verbose_name': 'Тип договора',
-                'verbose_name_plural': 'Типы договоров',
-                'ordering': ['name'],
+                "verbose_name": "Тип договора",
+                "verbose_name_plural": "Типы договоров",
+                "ordering": ["name"],
             },
         ),
         migrations.CreateModel(
-            name='Work',
+            name="Work",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200, verbose_name='Название работы')),
-                ('price', models.DecimalField(blank=True, decimal_places=2, max_digits=12, null=True, verbose_name='Стоимость (по умолчанию)')),
-                ('contract_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='works', to='contracts_app.contracttype', verbose_name='Тип договора')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=200, verbose_name="Название работы")),
+                (
+                    "price",
+                    models.DecimalField(
+                        blank=True,
+                        decimal_places=2,
+                        max_digits=12,
+                        null=True,
+                        verbose_name="Стоимость (по умолчанию)",
+                    ),
+                ),
+                (
+                    "contract_type",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="works",
+                        to="contracts_app.contracttype",
+                        verbose_name="Тип договора",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Работа',
-                'verbose_name_plural': 'Работы',
-                'ordering': ['contract_type__name', 'name'],
-                'unique_together': {('name', 'contract_type')},
+                "verbose_name": "Работа",
+                "verbose_name_plural": "Работы",
+                "ordering": ["contract_type__name", "name"],
+                "unique_together": {("name", "contract_type")},
             },
         ),
     ]

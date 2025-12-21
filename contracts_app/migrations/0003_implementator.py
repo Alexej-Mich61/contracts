@@ -7,21 +7,40 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0002_region_district'),
+        ("contracts_app", "0002_region_district"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Implementator',
+            name="Implementator",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=300, verbose_name='Наименование')),
-                ('inn', models.CharField(help_text='10 цифр — юр.лицо, 12 — физ.лицо', max_length=12, unique=True, validators=[django.core.validators.RegexValidator(message='ИНН должен содержать 10 или 12 цифр.', regex='^\\d{10}$|^\\d{12}$')], verbose_name='ИНН')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True, primary_key=True, serialize=False, verbose_name="ID"
+                    ),
+                ),
+                ("name", models.CharField(max_length=300, verbose_name="Наименование")),
+                (
+                    "inn",
+                    models.CharField(
+                        help_text="10 цифр — юр.лицо, 12 — физ.лицо",
+                        max_length=12,
+                        unique=True,
+                        validators=[
+                            django.core.validators.RegexValidator(
+                                message="ИНН должен содержать 10 или 12 цифр.",
+                                regex="^\\d{10}$|^\\d{12}$",
+                            )
+                        ],
+                        verbose_name="ИНН",
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Исполнитель',
-                'verbose_name_plural': 'Исполнители',
-                'ordering': ['name'],
+                "verbose_name": "Исполнитель",
+                "verbose_name_plural": "Исполнители",
+                "ordering": ["name"],
             },
         ),
     ]

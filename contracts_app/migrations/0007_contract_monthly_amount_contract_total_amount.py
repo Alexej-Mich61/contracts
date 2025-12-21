@@ -6,18 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0006_contract_note_contract_works'),
+        ("contracts_app", "0006_contract_note_contract_works"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='contract',
-            name='monthly_amount',
-            field=models.DecimalField(blank=True, decimal_places=2, help_text='Например: 104 166.67', max_digits=10, null=True, verbose_name='Сумма в месяц'),
+            model_name="contract",
+            name="monthly_amount",
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=2,
+                help_text="Например: 104 166.67",
+                max_digits=10,
+                null=True,
+                verbose_name="Сумма в месяц",
+            ),
         ),
         migrations.AddField(
-            model_name='contract',
-            name='total_amount',
-            field=models.DecimalField(blank=True, decimal_places=2, help_text='Например: 1 250 000.00', max_digits=12, null=True, verbose_name='Сумма общая'),
+            model_name="contract",
+            name="total_amount",
+            field=models.DecimalField(
+                blank=True,
+                decimal_places=2,
+                help_text="Например: 1 250 000.00",
+                max_digits=12,
+                null=True,
+                verbose_name="Сумма общая",
+            ),
         ),
     ]

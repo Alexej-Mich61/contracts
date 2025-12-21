@@ -6,32 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('contracts_app', '0003_implementator'),
+        ("contracts_app", "0003_implementator"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='work',
-            options={'ordering': ['name'], 'verbose_name': 'Работа', 'verbose_name_plural': 'Работы'},
+            name="work",
+            options={
+                "ordering": ["name"],
+                "verbose_name": "Работа",
+                "verbose_name_plural": "Работы",
+            },
         ),
         migrations.AlterUniqueTogether(
-            name='work',
+            name="work",
             unique_together=set(),
         ),
         migrations.AlterField(
-            model_name='work',
-            name='name',
-            field=models.CharField(max_length=200, unique=True, verbose_name='Название работы'),
+            model_name="work",
+            name="name",
+            field=models.CharField(max_length=200, unique=True, verbose_name="Название работы"),
         ),
         migrations.RemoveField(
-            model_name='work',
-            name='contract_type',
+            model_name="work",
+            name="contract_type",
         ),
         migrations.RemoveField(
-            model_name='work',
-            name='price',
+            model_name="work",
+            name="price",
         ),
         migrations.DeleteModel(
-            name='ContractType',
+            name="ContractType",
         ),
     ]

@@ -59,13 +59,35 @@ class ContractAdmin(admin.ModelAdmin):
     search_fields = ("customer_name", "customer_inn", "implementator__name")
     inlines = [AKInline]
 
+    # показываем, но не редактируем
+    readonly_fields = ("status", "created_at", "updated_at", "created_by", "updated_by")
+
     fieldsets = (
         ("Заказчик", {"fields": ("customer_name", "customer_inn")}),
         ("Сроки", {"fields": ("start_date", "end_date")}),
         ("Исполнитель", {"fields": ("implementator",)}),
         ("Чек-лист", {"fields": ("gos_services", "oko", "spolokh")}),
+        (
+            "Стадия подписания",
+            {
+                "fields": (
+                    "contract_to_be_signed",
+                    "contract_signed",
+                    "contract_signed_in_trading_platform",
+                    "contract_signed_in_EDO",
+                    "contract_original_received",
+                    "contract_termination",
+                )
+            },
+        ),
         ("Файлы", {"fields": ("file1", "file2", "file3")}),
-        ("Система", {"fields": ("status", "created_at", "updated_at"), "classes": ("collapse",)}),
+        (
+            "Система",
+            {
+                "fields": ("status", "created_at", "updated_at", "created_by", "updated_by"),
+                "classes": ("collapse",),
+            },
+        ),
     )
 
     def ak_count(self, obj):

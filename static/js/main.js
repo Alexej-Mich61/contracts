@@ -90,3 +90,25 @@ function handleChecklistChange(checkbox) {
         checkbox.checked = !checkbox.checked; // откатываем чекбокс
     });
 }
+
+// === Обновление стадии подписания ===
+function handleSigningStageChange(radio) {
+    const form = radio.closest('form');
+    fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            showToast(data.message || 'Стадия подписания обновлена', 'info', 2500);
+        }
+    })
+    .catch(() => {
+        showToast('Ошибка связи с сервером', 'danger');
+        // Откатываем выбор
+        form.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+        form.querySelector(`input[value="${radio.form.previous_value}"]`).checked = true;
+    });
+}

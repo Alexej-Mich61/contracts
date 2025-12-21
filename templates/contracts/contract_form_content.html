@@ -43,6 +43,21 @@
     </div>
 </div>
 
+<!-- Стадия подписания -->
+<div class="card mb-3">
+    <div class="card-header">Стадия подписания</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">{{ form.contract_to_be_signed|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.contract_signed|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.contract_signed_in_trading_platform|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.contract_signed_in_EDO|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.contract_original_received|as_crispy_field }}</div>
+            <div class="col-md-4">{{ form.contract_termination|as_crispy_field }}</div>
+        </div>
+    </div>
+</div>
+
 <!-- Работы -->
 <div class="card mb-3">
     <div class="card-header">Работы <span class="text-danger">(обязательно)</span></div>
@@ -90,17 +105,17 @@
         {{ ak_formset.management_form }}
         <div id="ak-container">
             {% for form in ak_formset %}
-                <div class="inline-form bg-white mb-3 p-3 border rounded">
-                    {{ form.id }}
-                    <div class="row align-items-start g-3">
-                        <div class="col-md-3">{{ form.number|as_crispy_field }}</div>
-                        <div class="col-md-4">{{ form.district|as_crispy_field }}</div>
-                        <div class="col-md-4">{{ form.address|as_crispy_field }}</div>
-                        <div class="col-md-1 text-end">
-                            {{ form.DELETE|as_crispy_field }}
-                        </div>
+            <div class="inline-form bg-white mb-3 p-3 border rounded">
+                {{ form.id }}
+                <div class="row align-items-start g-3">
+                    <div class="col-md-3">{{ form.number|as_crispy_field }}</div>
+                    <div class="col-md-4">{{ form.district|as_crispy_field }}</div>
+                    <div class="col-md-4">{{ form.address|as_crispy_field }}</div>
+                    <div class="col-md-1 text-end">
+                        {{ form.DELETE|as_crispy_field }}
                     </div>
                 </div>
+            </div>
             {% endfor %}
         </div>
 
