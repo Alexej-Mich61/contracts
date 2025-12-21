@@ -118,3 +118,22 @@ CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", cast=Csv())
 SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=False, cast=bool)
 CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=False, cast=bool)
 SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=False, cast=bool)
+
+# === DEBUG TOOLBAR (только в DEBUG=True) ===
+if config("DEBUG", default=False, cast=bool):
+    INSTALLED_APPS += ["debug_toolbar"]
+
+    MIDDLEWARE += ["debug_toolbar.middleware.DebugToolbarMiddleware"]
+
+    # Чтобы тулбар показывался только тебе (по IP)
+    INTERNAL_IPS = [
+        "127.0.0.1",
+        "localhost",
+        # Если работаешь с Docker или VM — добавь свой IP
+        # "10.0.2.2",  # пример для VirtualBox
+    ]
+
+    # Опционально: настройки тулбара
+    DEBUG_TOOLBAR_CONFIG = {
+        "SHOW_TOOLBAR_CALLBACK": lambda request: True,  # всегда показывать в DEBUG
+    }

@@ -5,6 +5,7 @@ from django.contrib import admin
 from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from django.conf.urls import handler404, handler500, handler403
+from django.conf import settings
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -26,3 +27,7 @@ handler500 = "contracts_app.views.custom_server_error"
 if settings.DEBUG or True:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATICFILES_DIRS[0])
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+    import debug_toolbar
+
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
