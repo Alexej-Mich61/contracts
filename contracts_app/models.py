@@ -1,4 +1,7 @@
 # contracts_app/models.py
+import uuid
+from pathlib import Path
+
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.core.validators import (
@@ -13,9 +16,25 @@ from simple_history.models import HistoricalRecords  # ← Для истории
 
 
 def contract_file_upload_to(instance, filename):
-    """Загружает файлы в папку по году: contracts/files/2026/ и т.д."""
+    """
+    Загружает файлы в папку по году с уникальным именем:
+    contracts/files/2025/оригинальное_имя_uuid.pdf
+    """
     year = timezone.now().year
-    return f"contracts/files/{year}/{filename}"
+
+    # Получаем расширение файла (с точкой, например .pdf)
+    ext = Path(filename).suffix.lower()  # .pdf, .docx и т.д.
+
+    # Получаем оригинальное имя без расширения
+    original_name = Path(filename).stem
+
+    # Генерируем короткий UUID (12 символов — достаточно уникально)
+    unique_id = uuid.uuid4().hex[:12]
+
+    # Новое имя: оригинальное_имя_uuid.pdf
+    new_filename = f"{original_name}_{unique_id}{ext}"
+
+    return f"contracts/files/{year}/{new_filename}"
 
 
 # === ВАЛИДАТОР ФАЙЛОВ ===

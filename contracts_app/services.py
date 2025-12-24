@@ -1,15 +1,13 @@
 # contracts_app/services.py
 from datetime import datetime
 
+from django.core.paginator import Paginator
 from django.db.models import Count, Q, Sum
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
-
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font
 from openpyxl.utils import get_column_letter
-
-from django.core.paginator import Paginator
 
 from .models import Contract, Implementator, Work
 
@@ -57,22 +55,22 @@ def get_filtered_contracts(get_params):
         if checklist_filters:
             contracts = contracts.filter(checklist_filters)
 
-        # Стадия подписания (хотя бы один включён)
+        # 9. Стадия подписания
         stage_filters = Q()
-        if get_params.get("stage_to_be_signed"):
+        if get_params.get("contract_to_be_signed"):
             stage_filters |= Q(contract_to_be_signed=True)
-            if get_params.get("stage_signed"):
-                stage_filters |= Q(contract_signed=True)
-            if get_params.get("stage_trading_platform"):
-                stage_filters |= Q(contract_signed_in_trading_platform=True)
-            if get_params.get("stage_edo"):
-                stage_filters |= Q(contract_signed_in_EDO=True)
-            if get_params.get("stage_original_received"):
-                stage_filters |= Q(contract_original_received=True)
-            if get_params.get("stage_termination"):
-                stage_filters |= Q(contract_termination=True)
-            if stage_filters:
-                contracts = contracts.filter(stage_filters)
+        if get_params.get("contract_signed"):
+            stage_filters |= Q(contract_signed=True)
+        if get_params.get("contract_signed_in_trading_platform"):
+            stage_filters |= Q(contract_signed_in_trading_platform=True)
+        if get_params.get("contract_signed_in_EDO"):
+            stage_filters |= Q(contract_signed_in_EDO=True)
+        if get_params.get("contract_original_received"):
+            stage_filters |= Q(contract_original_received=True)
+        if get_params.get("contract_termination"):
+            stage_filters |= Q(contract_termination=True)
+        if stage_filters:
+            contracts = contracts.filter(stage_filters)
 
         contracts = contracts.distinct()
 
