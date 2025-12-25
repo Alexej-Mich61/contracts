@@ -157,6 +157,7 @@ def export_contracts_to_excel(get_params):
     ws = wb.active
     ws.title = "Долгосрочные договоры"
 
+    # ←←← ОБНОВЛЁННЫЕ ЗАГОЛОВКИ ←←←
     headers = [
         "№",
         "Заказчик",
@@ -166,6 +167,9 @@ def export_contracts_to_excel(get_params):
         "Статус",
         "Кол-во АК",
         "АК (номера)",
+        "Районы АК",
+        "Адреса АК",
+        "Стадия подписания",  # ← новая колонка
         "Работы",
         "Сумма общая",
         "В мес",
@@ -175,7 +179,7 @@ def export_contracts_to_excel(get_params):
     ]
     ws.append(headers)
 
-    # Стили заголовков
+    # Стили заголовков (без изменений)
     bold = Font(bold=True)
     center = Alignment(horizontal="center", vertical="center", wrap_text=True)
     ws.row_dimensions[1].height = 30
@@ -185,9 +189,35 @@ def export_contracts_to_excel(get_params):
 
     # Данные
     for idx, contract in enumerate(contracts, start=1):
+        # ←←← АК: номера, районы, адреса ←←←
         ak_numbers = (
             " | ".join(str(ak.number) for ak in contract.aks.all()) if contract.aks.exists() else ""
         )
+        ak_districts = (
+            " | ".join(str(ak.district) for ak in contract.aks.all())
+            if contract.aks.exists()
+            else ""
+        )
+        ak_addresses = (
+            " | ".join(ak.address for ak in contract.aks.all()) if contract.aks.exists() else ""
+        )
+
+        # ←←← Стадия подписания — читаемый текст ←←←
+        signing_stage = ""
+        if contract.contract_to_be_signed:
+            signing_stage = "На подписании"
+        elif contract.contract_signed:
+            signing_stage = "Подписан"
+        elif contract.contract_signed_in_trading_platform:
+            signing_stage = "Торги"
+        elif contract.contract_signed_in_EDO:
+            signing_stage = "ЭДО"
+        elif contract.contract_original_received:
+            signing_stage = "Бумажный оригинал"
+        elif contract.contract_termination:
+            signing_stage = "Расторжение"
+
+        # Работы (без изменений)
         works_list = (
             " | ".join(w.name for w in contract.works.all()) if contract.works.exists() else ""
         )
@@ -201,6 +231,9 @@ def export_contracts_to_excel(get_params):
             contract.get_status_display(),
             contract.aks.count(),
             ak_numbers,
+            ak_districts,
+            ak_addresses,
+            signing_stage,  # ← новая колонка
             works_list,
             contract.total_amount or "",
             contract.monthly_amount or "",
@@ -210,7 +243,7 @@ def export_contracts_to_excel(get_params):
         ]
         ws.append(row)
 
-    # Автоширина колонок
+    # Автоширина колонок (без изменений)
     for col in ws.columns:
         max_length = 0
         column = col[0].column_letter
@@ -223,7 +256,7 @@ def export_contracts_to_excel(get_params):
         adjusted_width = min(max_length + 2, 50)
         ws.column_dimensions[column].width = adjusted_width
 
-    # Ответ
+    # Ответ (без изменений)
     response = HttpResponse(
         content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     )

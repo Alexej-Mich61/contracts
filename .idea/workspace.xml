@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="42. req">
-      <change afterPath="$PROJECT_DIR$/contracts_app/migrations/0010_contract_contract_original_received_and_more.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/contracts_app/migrations/0011_contract_created_by_contract_is_active_and_more.py" afterDir="false" />
+    <list default="true" id="50ec89b7-453e-427f-96c1-2812555cb905" name="Changes" comment="43. uuid для файлов">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts_app/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contracts_app/services.py" beforeDir="false" afterPath="$PROJECT_DIR$/contracts_app/services.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements-dev.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements-dev.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/contracts/includes/contract_filter_form.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/contracts/includes/contract_filter_form.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,14 +64,6 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762853511698</updated>
-    </task>
-    <task id="LOCAL-00001" summary="Init commit">
-      <option name="closed" value="true" />
-      <created>1762854700214</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1762854700214</updated>
     </task>
     <task id="LOCAL-00002" summary="2. настроил .env, приложение contracts_app">
       <option name="closed" value="true" />
@@ -464,14 +449,21 @@
       <option name="project" value="LOCAL" />
       <updated>1766360061935</updated>
     </task>
-    <option name="localTasksCounter" value="50" />
+    <task id="LOCAL-00050" summary="43. uuid для файлов">
+      <option name="closed" value="true" />
+      <created>1766581447952</created>
+      <option name="number" value="00050" />
+      <option name="presentableId" value="LOCAL-00050" />
+      <option name="project" value="LOCAL" />
+      <updated>1766581447953</updated>
+    </task>
+    <option name="localTasksCounter" value="51" />
     <servers />
   </component>
   <component name="UnknownFeatures">
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.in" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="19. Тёмная тема" />
     <MESSAGE value="20. Отдельный файл JS, убрал скрипты из шаблонов" />
     <MESSAGE value="21. Добавил статус Ожидание" />
     <MESSAGE value="22. Фильтры" />
@@ -496,6 +488,7 @@
     <MESSAGE value="40. деплой v1" />
     <MESSAGE value="41. архив, фильтр, подвал, 404, services" />
     <MESSAGE value="42. req" />
-    <option name="LAST_COMMIT_MESSAGE" value="42. req" />
+    <MESSAGE value="43. uuid для файлов" />
+    <option name="LAST_COMMIT_MESSAGE" value="43. uuid для файлов" />
   </component>
 </project>
